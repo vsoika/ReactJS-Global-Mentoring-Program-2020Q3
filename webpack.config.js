@@ -2,15 +2,13 @@ const path = require('path');
 const webpack = require('webpack');
 require('dotenv').config();
 
-
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
-const ENV = process.env.APP_ENV;
+const ENV = process.env.npm_lifecycle_event;
 const isDev = ENV === 'dev';
-const isProd = ENV === 'build';
+const isProd = ENV === 'prod';
 
 function setDevTool() {
   if (isDev) {
@@ -28,24 +26,19 @@ function setDMode() {
   }
 }
 
-
-module.exports = {
+const config = {
   mode: setDMode(),
   devtool: setDevTool(),
   watch: true,
   entry: "./src/index.js",
   output: {
-    filename: 'bundle.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/',
   },
   devServer: {
-    contentBase: path.join(__dirname, "dist"),
-    compress: true,
-    historyApiFallback: true,
+    contentBase: path.join(__dirname, 'dist'),
     port: 7000,
   },
-  
 
   module: {
     rules: [
@@ -83,18 +76,13 @@ module.exports = {
       template: "./public/index.html",
       filename: "./index.html",
     }),
-    new webpack.DefinePlugin({
-      API_KEY: JSON.stringify(process.env.API_KEY),
-      APP_ENV: JSON.stringify(process.env.APP_ENV),
-    }),
   ],
 };
 
 if (isProd) {
   config.plugins.push(
     new UglifyJSPlugin(),
-    new CopyWebpackPlugin([{
-        from: __dirname + '/public'
-    }])
   );
 }
+
+module.exports = config;
