@@ -6,9 +6,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
-const ENV = process.env.npm_lifecycle_event;
-const isDev = ENV === 'dev';
-const isProd = ENV === 'prod';
+const ENV = process.env.NODE_ENV;
+const isDev = ENV === 'development';
+const isProd = ENV === 'production';
 
 function setDevTool() {
   if (isDev) {
@@ -74,6 +74,7 @@ const config = {
     }),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
+      favicon: './src/assets/icons/favicon.ico',
       filename: "./index.html",
     }),
   ],
