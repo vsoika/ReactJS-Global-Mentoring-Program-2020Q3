@@ -30,7 +30,7 @@ const config = {
   mode: setDMode(),
   devtool: setDevTool(),
   watch: true,
-  entry: "./src/index.js",
+  entry: "./src/index.jsx",
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
@@ -52,11 +52,11 @@ const config = {
       },
       {
         test: /\.(png|svg|jpg|gif|ico)$/,
-        use: ['file-loader'],
+        use: 'file-loader',
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: ['file-loader'],
+        use: 'file-loader',
       },
       {
         test: /\.jsx?$/,
@@ -65,7 +65,16 @@ const config = {
           loader: 'babel-loader',
         },
       },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
     ],
+  },
+  
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
 
   plugins: [
