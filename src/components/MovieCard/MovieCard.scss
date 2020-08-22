@@ -1,0 +1,14 @@
+.movie-card {
+  max-width: 15.625rem;
+
+  &__image-wrapper {
+    width: 15.625rem;
+    height: 23.438rem;
+  }
+
+  &__image {
+    max-width: 100%;
+    height: 100%;
+    width: 100%;
+  }
+}
