@@ -1,15 +1,23 @@
 import React, { Component } from "react";
 import { Button, InputGroup, FormControl } from "react-bootstrap";
 
+interface ISearchProps {
+  handleSearchInputChange: (inputMovie: string) => void;
+}
 
-class Search extends Component {
+
+class Search extends Component<ISearchProps> {
   getInputMovie = () => {
     const inputValue = document.getElementById('inputMovie') as HTMLInputElement;
     const inputMovie = inputValue.value.trim();
     console.log(inputMovie);
+
+    this.props.handleSearchInputChange(inputMovie);
   }
 
   render() {
+    const { handleSearchInputChange } = this.props;
+
     return (
       <InputGroup className="mb-3">
         <FormControl

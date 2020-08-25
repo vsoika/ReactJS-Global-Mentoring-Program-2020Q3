@@ -1,3 +1,63 @@
+#root {
+  background: #523158;
+}
+
+.bg-wrapper {
+  background: #523158
+    url("https://static.skyassets.com/contentstack/assets/blt143e20b03d72047e/blt799bb50ccd638ac7/5eb16c2f2b5c250fd145da24/Watch_Hero_Desktop_Brassic2_(1).jpg?imageManager=true&width=1920")
+    50% 5% no-repeat;
+  height: 25rem;
+
+  .input-group {
+    padding: 4rem 8rem !important;
+    width: 50%;
+  }
+}
+
 .title {
-    color: green;
+  padding: 2rem 8rem;
+  color: #f65261;
+}
+
+.filter-wrapper {
+  padding: 0 8rem !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-control {
+  border-color: #dee2e6 !important;
+  background-color: transparent !important;
+  color: #dee2e6 !important;
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem #f652615e !important;
+  }
+}
+
+.btn-outline-secondary {
+  color: #dee2e6 !important;
+  border-color: #dee2e6 !important;
+
+  &:hover {
+    background-color: #f65261 !important;
+    border-color: #f65261 !important;
+  }
+}
+
+.nav-pills .nav-link.active {
+  background-color: #f65261 !important;
+}
+
+.nav-link {
+  color: #fff;
+
+  &:hover {
+    color: #f65261;
+  }
+
+  &.active {
+    color: #000 !important;
+  }
 }

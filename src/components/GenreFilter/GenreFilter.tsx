@@ -5,7 +5,9 @@ interface IGenreFilterState {
   selectedGenre: string;
 }
 
-interface IGenreFilterProps {}
+interface IGenreFilterProps {
+  handleGenreFilter: (genre: string) => void;
+}
 
 class GenreFilter extends Component<IGenreFilterProps, IGenreFilterState> {
   state = {
@@ -14,12 +16,14 @@ class GenreFilter extends Component<IGenreFilterProps, IGenreFilterState> {
 
   handleSelect = (eventKey) => {
     this.setState({ selectedGenre: eventKey });
+    this.props.handleGenreFilter(eventKey);
   };
 
   render() {
     return (
       <>
         <Nav
+          className="mb-3"
           variant="pills"
           activeKey={this.state.selectedGenre || "All"}
           onSelect={(e) => this.handleSelect(e)}
