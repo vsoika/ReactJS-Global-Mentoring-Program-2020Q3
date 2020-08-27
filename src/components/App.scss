@@ -1,5 +1,12 @@
 #root {
   background: #523158;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.error-message {
+  background: #523158;
+  color: #fff;
 }
 
 .bg-wrapper {
@@ -60,4 +67,10 @@
   &.active {
     color: #000 !important;
   }
+}
+
+.movies-count {
+  margin-left: 9rem;
+  margin-bottom: 1rem;
+  color: #fff;
 }

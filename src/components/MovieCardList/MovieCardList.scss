@@ -29,14 +29,13 @@
 
   &__release-date {
     margin-bottom: 0.5rem;
+    padding: 0.2rem;
+    background: black;
+    border-radius: 0.5rem;
+    max-height: 1.9rem;
   }
 
   &__title {
     width: 80%;
   }
-}
-
-.movies-count {
-  margin-left: 1rem;
-  margin-bottom: 1rem;
 }

@@ -5,25 +5,33 @@ interface ISearchProps {
   handleSearchInputChange: (inputMovie: string) => void;
 }
 
-
 class Search extends Component<ISearchProps> {
-  getInputMovie = () => {
-    const inputValue = document.getElementById('inputMovie') as HTMLInputElement;
-    const inputMovie = inputValue.value.trim();
-    console.log(inputMovie);
+  state = {
+    inputValue: "",
+  };
 
+  getInputMovie = () => {
+    const inputValue = document.getElementById(
+      "inputMovie"
+    ) as HTMLInputElement;
+    const inputMovie = inputValue.value.trim();
     this.props.handleSearchInputChange(inputMovie);
-  }
+  };
+
+  handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      this.getInputMovie();
+    }
+  };
 
   render() {
-    const { handleSearchInputChange } = this.props;
-
     return (
       <InputGroup className="mb-3">
         <FormControl
           id="inputMovie"
           placeholder="write a movie"
           aria-label="Search movie"
+          onKeyPress={this.handleKeyPress}
         />
         <InputGroup.Append>
           <Button
@@ -31,7 +39,7 @@ class Search extends Component<ISearchProps> {
             className="search-btn"
             onClick={this.getInputMovie}
           >
-           SEARCH
+            SEARCH
           </Button>
         </InputGroup.Append>
       </InputGroup>
