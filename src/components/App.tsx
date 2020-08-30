@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import { Button } from "react-bootstrap";
 import Search from "./Search";
 import GenreFilter from "./GenreFilter";
 import ResultsSort from "./ResultsSort";
 import MovieCardList from "./MovieCardList";
+import AddMovie from "./AddMovie";
 import "./App.scss";
 
 import { SORT_OPTIONS } from "../constants";
@@ -14,6 +16,8 @@ class App extends Component {
     movieList: movies,
     sortOption: SORT_OPTIONS.release,
     selectedGenre: "",
+    addMovieModalShow: false,
+    isSuccessSubmit: false,
   };
 
   handleSearchInputChange = (inputMovie: string) => {
@@ -80,14 +84,33 @@ class App extends Component {
     this.handleSortOption(sortOption, filteredList);
   };
 
+  handleSuccessSubmit = () => {this.setState({isSuccessSubmit: true})};
+
   render() {
-    const { movieList, sortOption } = this.state;
+    const { movieList, sortOption, addMovieModalShow, isSuccessSubmit } = this.state;
 
     return (
       <>
         <div className="bg-wrapper">
           <h1 className="title">FIND YOUR MOVIE</h1>
           <Search handleSearchInputChange={this.handleSearchInputChange} />
+          <Button
+            variant="primary"
+            onClick={() => this.setState({ addMovieModalShow: true })}
+          >
+            ADD MOVIE
+          </Button>
+          <AddMovie
+            isSuccessSubmit={isSuccessSubmit}
+            handleSuccessSubmit={this.handleSuccessSubmit}
+            show={addMovieModalShow}
+            onHide={() =>
+              this.setState({
+                addMovieModalShow: false,
+                isSuccessSubmit: false,
+              })
+            }
+          />
         </div>
         <div className="filter-wrapper mt-3">
           <GenreFilter handleGenreFilter={this.handleGenreFilter} />
