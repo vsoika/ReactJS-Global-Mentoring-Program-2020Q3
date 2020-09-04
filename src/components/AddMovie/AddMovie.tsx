@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import { Modal, Button, Form, ModalBody } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import AddMovieFormGroup from "../AddMovieFormGroup";
 
 import { GENRE_TYPES, FORM_FIELDS_DATA } from "../../constants";
+import { v4 as uuidv4 } from "uuid";
 
 interface IAddMovieProps {
   show: boolean;
   onHide: () => void;
   isSuccessSubmit: boolean;
-  handleSuccessSubmit: () => void;
+  handleSuccessSubmit: (newMovie: {}) => void;
 }
 
 const AddMovie: React.FC<IAddMovieProps> = (props) => {
@@ -28,6 +29,7 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
     }
 
     const newMovie = {
+      id: uuidv4(),
       title: form.elements.title.value,
       vote_average: form.elements.rating.value,
       release_date: form.elements["release-date"].value,
@@ -39,8 +41,23 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
 
     console.log(newMovie);
     event.preventDefault();
-    handleSuccessSubmit();
+    handleSuccessSubmit(newMovie);
     setValidated(true);
+  };
+
+  const handleResetForm = (event) => {
+    const form = event.currentTarget;
+    event.preventDefault();
+
+    Array.from(form.querySelectorAll("input")).forEach(
+      (input: HTMLInputElement) => {
+        if (input.checked) {
+          input.checked = false;
+          return;
+        }
+        input.value = "";
+      }
+    );
   };
 
   return (
@@ -53,11 +70,16 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
           {" "}
-          {!isSuccessSubmit ? "ADD MOVIE" : "CONGRATULATIONS"}
+          {!isSuccessSubmit ? "ADD MOVIE" : ""}
         </Modal.Title>
       </Modal.Header>
 
-      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+      <Form
+        noValidate
+        validated={validated}
+        onSubmit={handleSubmit}
+        onReset={handleResetForm}
+      >
         {!isSuccessSubmit ? (
           <>
             <Modal.Body>
@@ -84,10 +106,14 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
             </Modal.Body>
             <Modal.Footer>
               <Button type="submit">Submit</Button>
+              <Button type="reset">Reset</Button>
             </Modal.Footer>
           </>
         ) : (
-          <p>The movie has been added to database successfully</p>
+          <>
+            <h2>CONGRATULATIONS!</h2>
+            <p>The movie has been added to database successfully</p>
+          </>
         )}
       </Form>
     </Modal>

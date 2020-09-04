@@ -4,6 +4,14 @@ export const SORT_OPTIONS = {
   rating: "Film rating",
 };
 
+export const GENRE_OPTIONS = {
+  all: 'All',
+  documentary: 'Documentary',
+  comedy: 'Comedy',
+  horror: 'Horror',
+  crime: 'Crime',
+}
+
 export const GENRE_TYPES = [
   { key: "Drama", label: "Drama" },
   { key: "Animation", label: "Animation" },
@@ -22,6 +30,7 @@ export const GENRE_TYPES = [
   { key: "War", label: "War" },
   { key: "History", label: "History" },
   { key: "Western", label: "Western" },
+  { key: "Documentary", label: "Documentary" },
 ];
 
 export const FORM_FIELDS_DATA = {

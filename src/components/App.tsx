@@ -7,7 +7,7 @@ import MovieCardList from "./MovieCardList";
 import AddMovie from "./AddMovie";
 import "./App.scss";
 
-import { SORT_OPTIONS } from "../constants";
+import { SORT_OPTIONS, GENRE_OPTIONS } from "../constants";
 import movies from "../data/movies.json";
 
 class App extends Component {
@@ -15,7 +15,7 @@ class App extends Component {
     allMoviesList: movies,
     movieList: movies,
     sortOption: SORT_OPTIONS.release,
-    selectedGenre: "",
+    selectedGenre: GENRE_OPTIONS.all,
     addMovieModalShow: false,
     isSuccessSubmit: false,
   };
@@ -73,7 +73,7 @@ class App extends Component {
     const { allMoviesList, sortOption } = this.state;
     let filteredList = [];
 
-    if (genre !== "All") {
+    if (genre !== GENRE_OPTIONS.all) {
       filteredList = allMoviesList.filter((movie) =>
         movie.genres.includes(genre)
       );
@@ -84,10 +84,23 @@ class App extends Component {
     this.handleSortOption(sortOption, filteredList);
   };
 
-  handleSuccessSubmit = () => {this.setState({isSuccessSubmit: true})};
+  handleSuccessSubmit = (newMovie) => {
+    const { selectedGenre, allMoviesList } = this.state;
+    this.setState({
+      isSuccessSubmit: true,
+    });
+
+    allMoviesList.push(newMovie);
+    this.handleGenreFilter(selectedGenre);
+  };
 
   render() {
-    const { movieList, sortOption, addMovieModalShow, isSuccessSubmit } = this.state;
+    const {
+      movieList,
+      sortOption,
+      addMovieModalShow,
+      isSuccessSubmit,
+    } = this.state;
 
     return (
       <>
