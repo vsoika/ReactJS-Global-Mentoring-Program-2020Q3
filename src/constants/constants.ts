@@ -45,7 +45,7 @@ export const FORM_FIELDS_DATA = {
     label: "Release date",
     formControlAttributes: {
       placeholder: "Select date",
-      name: "release-date",
+      name: "release_date",
       type: "date",
     },
   },
@@ -53,7 +53,7 @@ export const FORM_FIELDS_DATA = {
     label: "Movie image URL",
     formControlAttributes: {
       placeholder: "Movie image URL here",
-      name: "image-url",
+      name: "poster_path",
     },
   },
   overview: {
@@ -67,7 +67,7 @@ export const FORM_FIELDS_DATA = {
     label: "Rating",
     formControlAttributes: {
       placeholder: "Rating here",
-      name: "rating",
+      name: "vote_average",
       type: "number",
       step: "0.1",
       min: "0",

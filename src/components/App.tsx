@@ -94,12 +94,23 @@ class App extends Component {
     this.handleGenreFilter(selectedGenre);
   };
 
+  handleSuccessEdit = (updatedAllMoviesList) => {
+    const { selectedGenre } = this.state;
+    this.setState({allMoviesList: updatedAllMoviesList});
+
+    setTimeout(() => {
+      this.handleGenreFilter(selectedGenre);
+    }, 1000);
+    
+  }
+
   render() {
     const {
       movieList,
       sortOption,
       addMovieModalShow,
       isSuccessSubmit,
+      allMoviesList,
     } = this.state;
 
     return (
@@ -133,7 +144,7 @@ class App extends Component {
           />
         </div>
         <div className="movies-count">{movieList.length} movies found</div>
-        <MovieCardList movieList={movieList} />
+        <MovieCardList movieList={movieList} allMoviesList={allMoviesList} handleSuccessEdit={this.handleSuccessEdit}/>
       </>
     );
   }
