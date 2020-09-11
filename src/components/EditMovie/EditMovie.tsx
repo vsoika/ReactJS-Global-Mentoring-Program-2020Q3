@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import AddMovieFormGroup from "../AddMovieFormGroup";
 import { Multiselect } from "multiselect-react-dropdown";
 
 import { GENRE_TYPES, FORM_FIELDS_DATA } from "../../constants";
-import { v4 as uuidv4 } from "uuid";
 
 interface IEditMovieProps {
   show: boolean;
@@ -21,18 +19,20 @@ const EditMovie: React.FC<IEditMovieProps> = (props) => {
   const [validated, setValidated] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const { movieId, allMoviesList, handleSuccessEdit, ...modalProps } = props;
+  const multiselectRef = useRef(null);
   let selectedMovieGenres;
 
   if (movieId) {
     const selectedMovie = allMoviesList.filter(
       (movie) => movie.id === +movieId
     );
-    selectedMovieGenres = selectedMovie[0].genres.map(genre => {
-      return { key: genre, label: genre };
-    });
-  }
 
-  console.log(movieId);
+    if (selectedMovie.length) {
+      selectedMovieGenres = selectedMovie[0].genres.map((genre) => {
+        return { key: genre, label: genre };
+      });
+    }
+  }
 
   const handleSave = (event) => {
     event.preventDefault();
@@ -54,7 +54,7 @@ const EditMovie: React.FC<IEditMovieProps> = (props) => {
       release_date: form.elements["release_date"].value,
       poster_path: form.elements["poster_path"].value,
       overview: form.elements.overview.value,
-      genres: selectedGenres,
+      genres: selectedGenres.map(genre => genre.label),
       runtime: form.elements.runtime.value,
     };
 
@@ -71,6 +71,8 @@ const EditMovie: React.FC<IEditMovieProps> = (props) => {
 
     // handleSuccessSubmit(newMovie);
     setValidated(true);
+    const { onHide } = modalProps;
+    onHide();
   };
 
   const handleResetForm = (event) => {
@@ -79,10 +81,7 @@ const EditMovie: React.FC<IEditMovieProps> = (props) => {
 
     Array.from(form.querySelectorAll("input")).forEach(
       (input: HTMLInputElement) => {
-        if (input.checked) {
-          input.checked = false;
-          return;
-        }
+        multiselectRef.current.resetSelectedValues();
         input.value = "";
       }
     );
@@ -128,8 +127,12 @@ const EditMovie: React.FC<IEditMovieProps> = (props) => {
                 name="genre"
                 required
                 showCheckbox={true}
+                ref={multiselectRef}
                 selectedValues={selectedMovieGenres}
                 onSelect={(selected) => {
+                  setSelectedGenres(selected);
+                }}
+                onRemove={(selected) => {
                   setSelectedGenres(selected);
                 }}
               />

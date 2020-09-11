@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import AddMovieFormGroup from "../AddMovieFormGroup";
@@ -18,6 +18,7 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
   const [validated, setValidated] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const { isSuccessSubmit, handleSuccessSubmit, ...modalProps } = props;
+  const multiselectRef = useRef(null);
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -40,7 +41,6 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
       runtime: form.elements.runtime.value,
     };
 
-    console.log(newMovie);
     event.preventDefault();
     handleSuccessSubmit(newMovie);
     setValidated(true);
@@ -52,11 +52,8 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
 
     Array.from(form.querySelectorAll("input")).forEach(
       (input: HTMLInputElement) => {
-        if (input.checked) {
-          input.checked = false;
-          return;
-        }
         input.value = "";
+        multiselectRef.current.resetSelectedValues();
       }
     );
   };
@@ -99,6 +96,7 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
                   name="genre"
                   required
                   showCheckbox={true}
+                  ref={multiselectRef}
                   onSelect={(selected) => {
                     setSelectedGenres(selected.map(genre => genre.key));
                   }}
