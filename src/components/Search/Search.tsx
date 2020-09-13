@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, InputGroup, FormControl } from "react-bootstrap";
+import { Button, InputGroup, FormControl, Col } from "react-bootstrap";
 
 interface ISearchProps {
   handleSearchInputChange: (inputMovie: string) => void;
@@ -26,23 +26,25 @@ class Search extends Component<ISearchProps> {
 
   render() {
     return (
-      <InputGroup className="mb-3">
-        <FormControl
-          id="inputMovie"
-          placeholder="write a movie"
-          aria-label="Search movie"
-          onKeyPress={this.handleKeyPress}
-        />
-        <InputGroup.Append>
-          <Button
-            variant="outline-secondary"
-            className="search-btn"
-            onClick={this.getInputMovie}
-          >
-            SEARCH
-          </Button>
-        </InputGroup.Append>
-      </InputGroup>
+      <Col lg={5} md={6} sm={12}>
+        <InputGroup>
+          <FormControl
+            id="inputMovie"
+            placeholder="write a movie"
+            aria-label="Search movie"
+            onKeyPress={this.handleKeyPress}
+          />
+          <InputGroup.Append>
+            <Button
+              variant="outline-secondary"
+              className="search-btn"
+              onClick={this.getInputMovie}
+            >
+              SEARCH
+            </Button>
+          </InputGroup.Append>
+        </InputGroup>
+      </Col>
     );
   }
 }

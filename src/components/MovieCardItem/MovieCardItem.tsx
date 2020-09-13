@@ -37,13 +37,10 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
   };
 
   const handleDropdownButton = (e) => {
-    console.log(e.target);
     const selectedOption = e.target.textContent;
     const selectedMovieId = e.currentTarget.parentNode.getAttribute("id");
 
     if (!selectedOption) return;
-
-    console.log(selectedOption);
 
     selectedOption === "Edit"
       ? setEditMovieModalShow(true)
@@ -54,8 +51,9 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
 
   return (
     <li
-      className="movie-card"
+      className="movie-card mr-sm-3"
       id={String(id)}
+      onTouchStart={(e) => showEditButton(e)}
       onMouseEnter={(e) => showEditButton(e)}
       onMouseLeave={(e) => hideEditButton(e)}
     >
@@ -66,7 +64,6 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
         <h5 className="movie-card__title">{title}</h5>
         <p className="movie-card__release-date">{release_date.slice(0, 4)}</p>
       </div>
-      {/* <div className="movie-card__edit-button">:</div> */}
       <DropdownButton
         id="dropdown-basic-button"
         className="movie-card__edit-button"

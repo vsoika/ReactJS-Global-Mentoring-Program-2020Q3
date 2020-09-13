@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Container, Row, Col } from "react-bootstrap";
 import Search from "./Search";
 import GenreFilter from "./GenreFilter";
 import ResultsSort from "./ResultsSort";
@@ -96,13 +96,12 @@ class App extends Component {
 
   handleSuccessEdit = (updatedAllMoviesList) => {
     const { selectedGenre } = this.state;
-    this.setState({allMoviesList: updatedAllMoviesList});
+    this.setState({ allMoviesList: updatedAllMoviesList });
 
     setTimeout(() => {
       this.handleGenreFilter(selectedGenre);
     }, 1000);
-    
-  }
+  };
 
   render() {
     const {
@@ -116,14 +115,31 @@ class App extends Component {
     return (
       <>
         <div className="bg-wrapper">
-          <h1 className="title">FIND YOUR MOVIE</h1>
-          <Search handleSearchInputChange={this.handleSearchInputChange} />
-          <Button
-            variant="primary"
-            onClick={() => this.setState({ addMovieModalShow: true })}
-          >
-            ADD MOVIE
-          </Button>
+          <Container>
+            <Row>
+              <Col xs={12}>
+                <h1 className="title text-center text-md-left">
+                  FIND YOUR MOVIE
+                </h1>
+              </Col>
+            </Row>
+            <Row className="search-wrapper">
+              <Search handleSearchInputChange={this.handleSearchInputChange} />
+              <Col
+                sm={12}
+                md={3}
+                className="d-flex justify-content-md-end justify-content-center mt-md-0 mt-4"
+              >
+                <Button
+                  className="add-movie-btn"
+                  variant="outline-primary"
+                  onClick={() => this.setState({ addMovieModalShow: true })}
+                >
+                  ADD MOVIE
+                </Button>
+              </Col>
+            </Row>
+          </Container>
           <AddMovie
             isSuccessSubmit={isSuccessSubmit}
             handleSuccessSubmit={this.handleSuccessSubmit}
@@ -136,15 +152,24 @@ class App extends Component {
             }
           />
         </div>
-        <div className="filter-wrapper mt-3">
-          <GenreFilter handleGenreFilter={this.handleGenreFilter} />
-          <ResultsSort
-            handleSortOption={this.handleSortOption}
-            sortOption={sortOption}
+        <Container>
+          <Row className="filter-wrapper mt-3">
+            <GenreFilter handleGenreFilter={this.handleGenreFilter} />
+            <ResultsSort
+              handleSortOption={this.handleSortOption}
+              sortOption={sortOption}
+            />
+          </Row>
+
+          <Row className="movies-count">
+            <Col xs={12}>{movieList.length} movies found</Col>
+          </Row>
+          <MovieCardList
+            movieList={movieList}
+            allMoviesList={allMoviesList}
+            handleSuccessEdit={this.handleSuccessEdit}
           />
-        </div>
-        <div className="movies-count">{movieList.length} movies found</div>
-        <MovieCardList movieList={movieList} allMoviesList={allMoviesList} handleSuccessEdit={this.handleSuccessEdit}/>
+        </Container>
       </>
     );
   }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Nav } from "react-bootstrap";
+import { Nav, Col } from "react-bootstrap";
 import GenreFilterItem from "../GenreFilterItem";
 import { GENRE_OPTIONS } from "../../constants";
 import { v4 as uuidv4 } from "uuid";
@@ -24,9 +24,9 @@ class GenreFilter extends Component<IGenreFilterProps, IGenreFilterState> {
 
   render() {
     return (
-      <>
+      <Col md={9} xs={12} className="mb-4">
         <Nav
-          className="mb-3"
+          className="justify-content-md-start justify-content-center"
           variant="pills"
           activeKey={this.state.selectedGenre || GENRE_OPTIONS.all}
           onSelect={(e) => this.handleSelect(e)}
@@ -35,7 +35,7 @@ class GenreFilter extends Component<IGenreFilterProps, IGenreFilterState> {
             return <GenreFilterItem key={uuidv4()} genre={genre} />;
           })}
         </Nav>
-      </>
+      </Col>
     );
   }
 }

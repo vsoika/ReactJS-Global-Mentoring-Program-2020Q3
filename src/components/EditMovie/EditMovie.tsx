@@ -11,8 +11,6 @@ interface IEditMovieProps {
   movieId: string;
   allMoviesList: any[];
   handleSuccessEdit: (updatedAllMoviesList: any[]) => void;
-  //   isSuccessSubmit: boolean;
-  //   handleSuccessSubmit: (newMovie: {}) => void;
 }
 
 const EditMovie: React.FC<IEditMovieProps> = (props) => {
@@ -24,7 +22,7 @@ const EditMovie: React.FC<IEditMovieProps> = (props) => {
 
   if (movieId) {
     const selectedMovie = allMoviesList.filter(
-      (movie) => movie.id === +movieId
+      (movie) => movie.id === movieId
     );
 
     if (selectedMovie.length) {
@@ -48,28 +46,24 @@ const EditMovie: React.FC<IEditMovieProps> = (props) => {
     }
 
     const newMovie = {
-      //   id: uuidv4(),
       title: form.elements.title.value,
       vote_average: form.elements["vote_average"].value,
       release_date: form.elements["release_date"].value,
       poster_path: form.elements["poster_path"].value,
       overview: form.elements.overview.value,
-      genres: selectedGenres.map(genre => genre.label),
+      genres: selectedGenres.map((genre) => genre.label),
       runtime: form.elements.runtime.value,
     };
 
     const updatedAllMoviesList = allMoviesList.map((movie) => {
-      if (movie.id === +movieId) {
+      if (movie.id === movieId) {
         movie = newMovie;
-        movie.id = +movieId;
+        movie.id = movieId;
       }
-
       return movie;
     });
 
     handleSuccessEdit(updatedAllMoviesList);
-
-    // handleSuccessSubmit(newMovie);
     setValidated(true);
     const { onHide } = modalProps;
     onHide();
@@ -94,10 +88,7 @@ const EditMovie: React.FC<IEditMovieProps> = (props) => {
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          EDIT MOVIE
-          {/* {!isSuccessSubmit ? "ADD MOVIE" : ""} */}
-        </Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">EDIT MOVIE</Modal.Title>
       </Modal.Header>
 
       <Form
@@ -139,15 +130,14 @@ const EditMovie: React.FC<IEditMovieProps> = (props) => {
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
-            <Button type="submit">Save</Button>
-            <Button type="reset">Reset</Button>
+            <Button type="submit" variant="outline-dark">
+              Save
+            </Button>
+            <Button type="reset" variant="outline-dark">
+              Reset
+            </Button>
           </Modal.Footer>
         </>
-
-        {/* <>
-            <h2>CONGRATULATIONS!</h2>
-            <p>The movie has been added to database successfully</p>
-          </> */}
       </Form>
     </Modal>
   );

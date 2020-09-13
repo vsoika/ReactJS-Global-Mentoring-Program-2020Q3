@@ -15,19 +15,35 @@
     50% 5% no-repeat;
   height: 25rem;
 
-  .input-group {
-    padding: 4rem 8rem !important;
-    width: 50%;
+  .search-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .add-movie-btn {
+    color: #fff;
+    border-color: #fff;
+    background-color: #f652617d;
+
+    &:hover,
+    &:active {
+      background-color: #f65261 !important;
+      border-color: #f65261 !important;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem #f65261bd;
+    }
   }
 }
 
 .title {
-  padding: 2rem 8rem;
+  padding-bottom: 2rem;
+  padding-top: 2rem;
   color: #f65261;
 }
 
 .filter-wrapper {
-  padding: 0 8rem !important;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -70,7 +86,16 @@
 }
 
 .movies-count {
-  margin-left: 9rem;
   margin-bottom: 1rem;
   color: #fff;
+}
+
+._7ahQImyV4dj0EpcNOjnwA {
+  background: #737577;
+}
+
+.lhyQmCtWOINviMz0WG_gr,
+._3vt7_Mh4hRCFbp__dFqBCI li:hover {
+  background: #dae0e563;
+  color: #000;
 }

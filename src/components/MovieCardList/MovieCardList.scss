@@ -1,11 +1,10 @@
 .movies-list {
-  padding: 0 8rem !important;
+  display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 
   .movie-card {
     max-width: 15.625rem;
-    margin-right: 1em;
-    margin-left: 1em;
     margin-bottom: 2rem;
     position: relative;
 
@@ -53,8 +52,9 @@
 
     .btn {
       border-radius: 50%;
-      
-      &:hover, &:focus {
+
+      &:hover,
+      &:focus {
         background-color: #f65261 !important;
       }
 
@@ -68,6 +68,10 @@
     .btn-primary {
       background-color: #000 !important;
       border-color: #000 !important;
+    }
+
+    .dropdown-item:active {
+      background-color: #f65261 !important;
     }
   }
 }

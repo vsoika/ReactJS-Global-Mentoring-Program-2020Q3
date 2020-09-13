@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import AddMovieFormGroup from "../AddMovieFormGroup";
 import { Multiselect } from "multiselect-react-dropdown";
 
@@ -33,9 +32,9 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
     const newMovie = {
       id: uuidv4(),
       title: form.elements.title.value,
-      vote_average: form.elements['vote_average'].value,
-      release_date: form.elements['release_date'].value,
-      poster_path: form.elements['poster_path'].value,
+      vote_average: form.elements["vote_average"].value,
+      release_date: form.elements["release_date"].value,
+      poster_path: form.elements["poster_path"].value,
       overview: form.elements.overview.value,
       genres: selectedGenres,
       runtime: form.elements.runtime.value,
@@ -98,21 +97,25 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
                   showCheckbox={true}
                   ref={multiselectRef}
                   onSelect={(selected) => {
-                    setSelectedGenres(selected.map(genre => genre.key));
+                    setSelectedGenres(selected.map((genre) => genre.key));
                   }}
                 />
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="submit">Submit</Button>
-              <Button type="reset">Reset</Button>
+              <Button type="submit" variant="outline-dark">
+                Submit
+              </Button>
+              <Button type="reset" variant="outline-dark">
+                Reset
+              </Button>
             </Modal.Footer>
           </>
         ) : (
-          <>
-            <h2>CONGRATULATIONS!</h2>
-            <p>The movie has been added to database successfully</p>
-          </>
+          <div className="d-flex flex-column">
+            <h3 className="mt-4 text-success text-center">CONGRATULATIONS!</h3>
+            <p className="mt-2 mb-4 text-center">The movie has been added to database successfully</p>
+          </div>
         )}
       </Form>
     </Modal>
