@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import { Nav } from "react-bootstrap";
+import { Nav, Col } from "react-bootstrap";
+import GenreFilterItem from "../GenreFilterItem";
+import { GENRE_OPTIONS } from "../../constants";
+import { v4 as uuidv4 } from "uuid";
 
 interface IGenreFilterState {
   selectedGenre: string;
@@ -21,30 +24,18 @@ class GenreFilter extends Component<IGenreFilterProps, IGenreFilterState> {
 
   render() {
     return (
-      <>
+      <Col md={9} xs={12} className="mb-4">
         <Nav
-          className="mb-3"
+          className="justify-content-md-start justify-content-center"
           variant="pills"
-          activeKey={this.state.selectedGenre || "All"}
+          activeKey={this.state.selectedGenre || GENRE_OPTIONS.all}
           onSelect={(e) => this.handleSelect(e)}
         >
-          <Nav.Item>
-            <Nav.Link eventKey="All">All</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="Documentary">Documentary</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="Comedy">Comedy</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="Horror">Horror</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="Crime">Crime</Nav.Link>
-          </Nav.Item>
+          {Object.values(GENRE_OPTIONS).map((genre) => {
+            return <GenreFilterItem key={uuidv4()} genre={genre} />;
+          })}
         </Nav>
-      </>
+      </Col>
     );
   }
 }
