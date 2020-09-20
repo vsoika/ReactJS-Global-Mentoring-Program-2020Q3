@@ -5,6 +5,7 @@ import GenreFilter from "./GenreFilter";
 import ResultsSort from "./ResultsSort";
 import MovieCardList from "./MovieCardList";
 import AddMovie from "./AddMovie";
+import MovieDetails from "./MovieDetails";
 import "./App.scss";
 
 import { SORT_OPTIONS, GENRE_OPTIONS } from "../constants";
@@ -17,6 +18,8 @@ const App: React.FC = () => {
   const [selectedGenre, setSelectedGenre] = useState(GENRE_OPTIONS.all);
   const [addMovieModalShow, setAddMovieModalShow] = useState(false);
   const [isSuccessSubmit, setIsSuccessSubmit] = useState(false);
+  const [isMovieDetails, setIsMovieDetails] = useState(false);
+  const [movieDetailsId, setMovieDetailsId] = useState("");
 
   const handleSearchInputChange = (inputMovie: string) => {
     let filterMovies = [];
@@ -54,10 +57,12 @@ const App: React.FC = () => {
   const handleGenreFilter = (genre: string) => {
     setSelectedGenre(genre);
 
-    const inputValue = document.getElementById(
-      "inputMovie"
-    ) as HTMLInputElement;
-    inputValue.value = "";
+    if (document.getElementById("inputMovie")) {
+      const inputValue = document.getElementById(
+        "inputMovie"
+      ) as HTMLInputElement;
+      inputValue.value = "";
+    }
 
     let filteredList = [];
 
@@ -86,43 +91,61 @@ const App: React.FC = () => {
     }, 1000);
   };
 
+  const showMovieDetails = (id: string) => {
+    setMovieDetailsId(id);
+    setIsMovieDetails(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const hideMovieDetails = () => setIsMovieDetails(false);
+
   return (
     <>
       <div className="bg-wrapper">
-        <Container>
-          <Row>
-            <Col xs={12}>
-              <h1 className="title text-center text-md-left">
-                FIND YOUR MOVIE
-              </h1>
-            </Col>
-          </Row>
-          <Row className="search-wrapper">
-            <Search handleSearchInputChange={handleSearchInputChange} />
-            <Col
-              sm={12}
-              md={3}
-              className="d-flex justify-content-md-end justify-content-center mt-md-0 mt-4"
-            >
-              <Button
-                className="add-movie-btn"
-                variant="outline-primary"
-                onClick={() => setAddMovieModalShow(true)}
-              >
-                ADD MOVIE
-              </Button>
-            </Col>
-          </Row>
-        </Container>
-        <AddMovie
-          isSuccessSubmit={isSuccessSubmit}
-          handleSuccessSubmit={handleSuccessSubmit}
-          show={addMovieModalShow}
-          onHide={() => {
-            setAddMovieModalShow(false);
-            setIsSuccessSubmit(false);
-          }}
-        />
+        {!isMovieDetails ? (
+          <>
+            <Container>
+              <Row>
+                <Col xs={12}>
+                  <h1 className="title text-center text-md-left">
+                    FIND YOUR MOVIE
+                  </h1>
+                </Col>
+              </Row>
+              <Row className="search-wrapper">
+                <Search handleSearchInputChange={handleSearchInputChange} />
+                <Col
+                  sm={12}
+                  md={3}
+                  className="d-flex justify-content-md-end justify-content-center mt-md-0 mt-4"
+                >
+                  <Button
+                    className="add-movie-btn"
+                    variant="outline-primary"
+                    onClick={() => setAddMovieModalShow(true)}
+                  >
+                    ADD MOVIE
+                  </Button>
+                </Col>
+              </Row>
+            </Container>
+            <AddMovie
+              isSuccessSubmit={isSuccessSubmit}
+              handleSuccessSubmit={handleSuccessSubmit}
+              show={addMovieModalShow}
+              onHide={() => {
+                setAddMovieModalShow(false);
+                setIsSuccessSubmit(false);
+              }}
+            />
+          </>
+        ) : (
+          <MovieDetails
+            movieId={movieDetailsId}
+            allMoviesList={allMoviesList}
+            hideMovieDetails={hideMovieDetails}
+          />
+        )}
       </div>
       <Container>
         <Row className="filter-wrapper mt-3">
@@ -140,6 +163,7 @@ const App: React.FC = () => {
           movieList={movieList}
           allMoviesList={allMoviesList}
           handleSuccessEdit={handleSuccessEdit}
+          showMovieDetails={showMovieDetails}
         />
       </Container>
     </>

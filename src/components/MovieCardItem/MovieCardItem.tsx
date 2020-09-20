@@ -10,6 +10,7 @@ interface IMovieCardProps {
   id: number;
   allMoviesList: any[];
   handleSuccessEdit: (updatedAllMoviesList: any[]) => void;
+  showMovieDetails: (id: string) => void;
 }
 
 const MovieCardItem: React.FC<IMovieCardProps> = ({
@@ -19,6 +20,7 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
   id,
   allMoviesList,
   handleSuccessEdit,
+  showMovieDetails,
 }) => {
   const [editMovieModalShow, setEditMovieModalShow] = useState(false);
   const [deleteMovieModalShow, setDeleteMovieModalShow] = useState(false);
@@ -49,6 +51,11 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
     setSelectedMovieId(selectedMovieId);
   };
 
+  const handleCardClick = (e) => {
+    if (e.target.getAttribute("id") === 'dropdown-basic-button') return;
+    showMovieDetails(e.currentTarget.getAttribute("id"));
+  }
+
   return (
     <li
       className="movie-card mr-sm-3"
@@ -56,6 +63,7 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
       onTouchStart={(e) => showEditButton(e)}
       onMouseEnter={(e) => showEditButton(e)}
       onMouseLeave={(e) => hideEditButton(e)}
+      onClick={(e) => handleCardClick(e)}
     >
       <div className="movie-card__image-wrapper">
         <img className="movie-card__image" src={poster_path} alt={title}></img>
