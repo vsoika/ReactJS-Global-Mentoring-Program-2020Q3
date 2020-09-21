@@ -52,8 +52,7 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
   };
 
   const handleCardClick = (e) => {
-    if (e.target.getAttribute("id") === 'dropdown-basic-button') return;
-    showMovieDetails(e.currentTarget.getAttribute("id"));
+    showMovieDetails(e.currentTarget.parentNode.getAttribute("id"));
   }
 
   return (
@@ -63,9 +62,8 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
       onTouchStart={(e) => showEditButton(e)}
       onMouseEnter={(e) => showEditButton(e)}
       onMouseLeave={(e) => hideEditButton(e)}
-      onClick={(e) => handleCardClick(e)}
     >
-      <div className="movie-card__image-wrapper">
+      <div className="movie-card__image-wrapper" onClick={(e) => handleCardClick(e)}>
         <img className="movie-card__image" src={poster_path} alt={title}></img>
       </div>
       <div className="movie-card__description">

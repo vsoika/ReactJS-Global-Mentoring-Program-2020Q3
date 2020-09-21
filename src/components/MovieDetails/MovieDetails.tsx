@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 
 import "./MovieDetails.scss";
@@ -14,7 +14,7 @@ const MovieDetails: React.FC<IMovieDetailsProps> = ({
   allMoviesList,
   hideMovieDetails,
 }) => {
-  const movie = allMoviesList.filter((movie) => movie.id === movieId);
+  const movie = useMemo(() => allMoviesList.filter((movie) => movie.id === movieId), [allMoviesList, movieId]);
 
   const {
     title,
