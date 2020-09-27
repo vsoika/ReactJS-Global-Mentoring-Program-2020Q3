@@ -1,0 +1,46 @@
+.movie-details {
+  background-color: #232023db;
+  height: 100%;
+  color: #fff;
+
+  &__image {
+    height: 25rem;
+    padding: 2rem;
+  }
+
+  &__description {
+    padding: 2rem;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+  }
+
+  &__average {
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    border: 2px solid #f65261;
+    border-radius: 50%;
+    font-weight: bold;
+  }
+
+  h5 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    color: #f65261;
+  }
+
+  &__close-bnt {
+    font-size: 2rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+
+    &:hover {
+      color: #f65261;
+    }
+  }
+}

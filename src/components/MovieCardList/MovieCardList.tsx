@@ -13,6 +13,7 @@ interface IResultContainerProps {
   allMoviesList: any[];
   handleSuccessEdit: (updatedAllMoviesList: any[]) => void;
   fetchMovies: () => void;
+  showMovieDetails: (id: string) => void;
 }
 
 const MovieCardList: React.FC<IResultContainerProps> = ({
@@ -20,6 +21,7 @@ const MovieCardList: React.FC<IResultContainerProps> = ({
   allMoviesList,
   handleSuccessEdit,
   fetchMovies,
+  showMovieDetails,
 }) => {
   useEffect(() => {
     fetchMovies();
@@ -47,6 +49,7 @@ const MovieCardList: React.FC<IResultContainerProps> = ({
                   release_date={movie.release_date}
                   allMoviesList={allMoviesList}
                   handleSuccessEdit={handleSuccessEdit}
+                  showMovieDetails={showMovieDetails}
                 />
               );
             })}
