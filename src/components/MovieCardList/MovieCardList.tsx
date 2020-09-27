@@ -1,6 +1,10 @@
-import React from "react";
-import { Row, Col } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { Row, Col, Spinner } from "react-bootstrap";
 import MovieCardItem from "../MovieCardItem";
+
+import fetchMovies from "../../store/actionCreators";
+import { useSelector } from "react-redux";
+import { connect } from "react-redux";
 
 import "./MovieCardList.scss";
 
@@ -8,34 +12,53 @@ interface IResultContainerProps {
   movieList: any[];
   allMoviesList: any[];
   handleSuccessEdit: (updatedAllMoviesList: any[]) => void;
+  fetchMovies: () => void;
 }
 
 const MovieCardList: React.FC<IResultContainerProps> = ({
-  movieList,
+  // movieList,
   allMoviesList,
   handleSuccessEdit,
+  fetchMovies,
 }) => {
+  useEffect(() => {
+    fetchMovies();
+  }, []);
+
+  const movies = useSelector((store: any) => store);
+  const { moviesList, pending } = movies;
+
+  console.log(movies);
+
   return (
     <Row>
       <Col xs={12}>
-        <ul className="list-unstyled list movies-list">
-          {movieList.map((movie) => {
-            return (
-              <MovieCardItem
-                key={movie.id}
-                id={movie.id}
-                poster_path={movie.poster_path}
-                title={movie.title}
-                release_date={movie.release_date}
-                allMoviesList={allMoviesList}
-                handleSuccessEdit={handleSuccessEdit}
-              />
-            );
-          })}
-        </ul>
+        {pending ? (
+          <Spinner className="mx-auto" animation="border" variant="danger" />
+        ) : (
+          <ul className="list-unstyled list movies-list">
+            {moviesList.map((movie) => {
+              return (
+                <MovieCardItem
+                  key={movie.id}
+                  id={movie.id}
+                  poster_path={movie.poster_path}
+                  title={movie.title}
+                  release_date={movie.release_date}
+                  allMoviesList={allMoviesList}
+                  handleSuccessEdit={handleSuccessEdit}
+                />
+              );
+            })}
+          </ul>
+        )}
       </Col>
     </Row>
   );
 };
 
-export default MovieCardList;
+// const mapStateToProps = state => ({
+//   moviesList: state.moviesList,
+// });
+
+export default connect(null, { fetchMovies })(MovieCardList);

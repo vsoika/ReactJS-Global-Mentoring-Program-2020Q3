@@ -1,3 +1,5 @@
+export const MOVIES_DATA_URL = 'http://localhost:4000/movies';
+
 export const SORT_OPTIONS = {
   release: "Release date",
   duration: "Film duration",
