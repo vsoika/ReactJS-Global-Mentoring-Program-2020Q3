@@ -8,12 +8,14 @@ interface IResultContainerProps {
   movieList: any[];
   allMoviesList: any[];
   handleSuccessEdit: (updatedAllMoviesList: any[]) => void;
+  showMovieDetails: (id: string) => void;
 }
 
 const MovieCardList: React.FC<IResultContainerProps> = ({
   movieList,
   allMoviesList,
   handleSuccessEdit,
+  showMovieDetails,
 }) => {
   return (
     <Row>
@@ -29,6 +31,7 @@ const MovieCardList: React.FC<IResultContainerProps> = ({
                 release_date={movie.release_date}
                 allMoviesList={allMoviesList}
                 handleSuccessEdit={handleSuccessEdit}
+                showMovieDetails={showMovieDetails}
               />
             );
           })}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useCallback } from "react";
 import { Modal, Button } from "react-bootstrap";
 
 interface IDeleteMovieProps {
@@ -12,13 +12,13 @@ interface IDeleteMovieProps {
 const DeleteMovie: React.FC<IDeleteMovieProps> = (props) => {
   const { movieId, allMoviesList, handleSuccessEdit, ...modalProps } = props;
 
-  const handleDeleteMovie = (movieId: string) => {
-    const newMovieList = allMoviesList.filter((movie) => movie.id !== movieId);
-    handleSuccessEdit(newMovieList);
+  const newMovieList = useMemo(() => allMoviesList.filter((movie) => movie.id !== movieId), [allMoviesList, movieId]);
 
+  const handleDeleteMovie = useCallback(() => {
+    handleSuccessEdit(newMovieList);
     const { onHide } = modalProps;
     onHide();
-  };
+  }, [newMovieList]);
 
   return (
     <Modal
@@ -37,7 +37,7 @@ const DeleteMovie: React.FC<IDeleteMovieProps> = (props) => {
       <Modal.Footer>
         <Button
           variant="outline-dark"
-          onClick={() => handleDeleteMovie(movieId)}
+          onClick={handleDeleteMovie}
         >
           CONFIRM
         </Button>

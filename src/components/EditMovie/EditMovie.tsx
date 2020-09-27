@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import AddMovieFormGroup from "../AddMovieFormGroup";
 import { Multiselect } from "multiselect-react-dropdown";
@@ -18,19 +18,20 @@ const EditMovie: React.FC<IEditMovieProps> = (props) => {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const { movieId, allMoviesList, handleSuccessEdit, ...modalProps } = props;
   const multiselectRef = useRef(null);
-  let selectedMovieGenres;
-
-  if (movieId) {
-    const selectedMovie = allMoviesList.filter(
-      (movie) => movie.id === movieId
-    );
-
-    if (selectedMovie.length) {
-      selectedMovieGenres = selectedMovie[0].genres.map((genre) => {
-        return { key: genre, label: genre };
-      });
+  
+  const selectedMovieGenres = useMemo(() => {
+    if (movieId) {
+      const selectedMovie = allMoviesList.filter(
+        (movie) => movie.id === movieId
+      );
+  
+      if (selectedMovie.length) {
+        return selectedMovie[0].genres.map((genre) => {
+          return { key: genre, label: genre };
+        });
+      }
     }
-  }
+  }, [movieId, allMoviesList]);
 
   const handleSave = (event) => {
     event.preventDefault();
