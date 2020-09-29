@@ -8,7 +8,6 @@ interface IMovieCardProps {
   title: string;
   release_date: string;
   id: number;
-  allMoviesList: any[];
   handleSuccessEdit: (updatedAllMoviesList: any[]) => void;
   showMovieDetails: (id: string) => void;
 }
@@ -18,7 +17,6 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
   title,
   release_date,
   id,
-  allMoviesList,
   handleSuccessEdit,
   showMovieDetails,
 }) => {
@@ -79,7 +77,7 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
         <Dropdown.Item>Edit</Dropdown.Item>
         <Dropdown.Item>Delete</Dropdown.Item>
       </DropdownButton>
-      <EditMovie
+      {/* <EditMovie
         show={editMovieModalShow}
         onHide={() => setEditMovieModalShow(false)}
         movieId={selectedMovieId}
@@ -92,7 +90,7 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
         movieId={selectedMovieId}
         allMoviesList={allMoviesList}
         handleSuccessEdit={handleSuccessEdit}
-      />
+      /> */}
     </li>
   );
 };
