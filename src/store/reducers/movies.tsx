@@ -16,8 +16,6 @@ const movies = (state = initialState, action: { type: string; payload }) => {
     return (a, b) => (a[sortOption] < b[sortOption] ? 1 : -1);
   };
 
-  console.log(action);
-
   switch (type) {
     case `${ACTIONS.FETCH_MOVIES}${REQUEST_STATE.PENDING}`:
       return {
@@ -48,19 +46,50 @@ const movies = (state = initialState, action: { type: string; payload }) => {
       const sortOption = state.sortOption;
       const moviesList = state.moviesList;
 
-      const filteredList = genre !== GENRE_OPTIONS.all
-        ? moviesList.filter((movie) =>
-            movie.genres.includes(genre)
-          )
-        : moviesList;
+      const filteredList =
+        genre !== GENRE_OPTIONS.all
+          ? moviesList.filter((movie) => movie.genres.includes(genre))
+          : moviesList;
 
-        sortOption === SORT_OPTIONS.duration
-          ? filteredList.sort(sortByOption("runtime"))
-          : sortOption === SORT_OPTIONS.rating
-          ? filteredList.sort(sortByOption("vote_average"))
-          : filteredList.sort(sortByOption("release_date"));
+      sortOption === SORT_OPTIONS.duration
+        ? filteredList.sort(sortByOption("runtime"))
+        : sortOption === SORT_OPTIONS.rating
+        ? filteredList.sort(sortByOption("vote_average"))
+        : filteredList.sort(sortByOption("release_date"));
 
-        return { ...state, filteredMoviesList: filteredList };
+      return { ...state, filteredMoviesList: filteredList };
+
+    case ACTIONS.ADD_MOVIE:
+      return { ...state, moviesList: [...state.moviesList, payload.newMovie] };
+
+    case ACTIONS.UPDATE_MOVIE:
+      const { updatedMovie } = payload;
+      const movies = state.moviesList;
+      const updatedMoviesList = movies.map((movie) => {
+        if (movie.id === updatedMovie.id) {
+          movie = updatedMovie;
+        }
+        return movie;
+      });
+
+      return { ...state, moviesList: updatedMoviesList };
+
+    case ACTIONS.DELETE_MOVIE:
+      const newMoviesList = state.moviesList.filter(
+        (movie) => movie.id !== payload.movieId
+      );
+      return { ...state, moviesList: newMoviesList };
+
+    case ACTIONS.GET_MOVIES_BY_SEARCH_INPUT:
+      const allMovies = state.filteredMoviesList;
+      const { searchValue } = payload;
+
+      const searchMovies = allMovies.filter((movie) => {
+        const searchMovie = searchValue.toLowerCase();
+        return movie.title.trim().toLowerCase().includes(searchMovie);
+      });
+
+      return { ...state, filteredMoviesList: searchMovies };
 
     default:
       return state;

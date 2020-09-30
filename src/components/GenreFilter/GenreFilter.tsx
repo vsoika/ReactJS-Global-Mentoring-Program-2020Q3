@@ -10,8 +10,9 @@ import { RootState } from "../../store/reducers";
 
 const GenreFilter: React.FC = () => {
   const dispatch = useDispatch();
-  const selectedGenre = useSelector((store: RootState) => store.movies.selectedGenre);
-  console.log(selectedGenre);
+  const selectedGenre = useSelector(
+    (store: RootState) => store.movies.selectedGenre
+  );
 
   const handleSelect = (eventKey: string) => {
     dispatch(setGenre(eventKey));

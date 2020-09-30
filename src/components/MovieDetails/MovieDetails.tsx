@@ -1,20 +1,27 @@
 import React, { useMemo } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/reducers";
+
 import "./MovieDetails.scss";
 
 interface IMovieDetailsProps {
-  movieId: string;
-  allMoviesList: any[];
+  movieId: number;
   hideMovieDetails: () => void;
 }
 
 const MovieDetails: React.FC<IMovieDetailsProps> = ({
   movieId,
-  allMoviesList,
   hideMovieDetails,
 }) => {
-  const movie = useMemo(() => allMoviesList.filter((movie) => movie.id === movieId), [allMoviesList, movieId]);
+  const filteredMoviesList = useSelector(
+    (store: RootState) => store.movies.filteredMoviesList
+  );
+  const movie = useMemo(
+    () => filteredMoviesList.filter((movie) => movie.id === movieId),
+    [filteredMoviesList, movieId]
+  );
 
   const {
     title,

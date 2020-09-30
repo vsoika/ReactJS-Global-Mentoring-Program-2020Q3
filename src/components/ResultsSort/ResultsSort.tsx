@@ -8,17 +8,13 @@ import { RootState } from "../../store/reducers";
 
 const ResultsSort: React.FC = () => {
   const { release, duration, rating } = SORT_OPTIONS;
-
   const dispatch = useDispatch();
-
   const sortOption = useSelector((store: RootState) => store.movies.sortOption);
-  console.log(sortOption);
 
   const handleSetSortOption = (option: string) => {
     dispatch(setSortOption(option));
     dispatch(getFilteredMovies());
-  }
-
+  };
 
   return (
     <Col md={3} xs={12} className="mb-2">
