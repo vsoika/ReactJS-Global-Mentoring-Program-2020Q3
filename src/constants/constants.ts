@@ -1,3 +1,5 @@
+export const MOVIES_DATA_URL = "http://localhost:4000/movies";
+
 export const SORT_OPTIONS = {
   release: "Release date",
   duration: "Film duration",
@@ -5,12 +7,12 @@ export const SORT_OPTIONS = {
 };
 
 export const GENRE_OPTIONS = {
-  all: 'All',
-  documentary: 'Documentary',
-  comedy: 'Comedy',
-  horror: 'Horror',
-  crime: 'Crime',
-}
+  all: "All",
+  documentary: "Documentary",
+  comedy: "Comedy",
+  horror: "Horror",
+  crime: "Crime",
+};
 
 export const GENRE_TYPES = [
   { key: "Drama", label: "Drama" },

@@ -4,13 +4,15 @@ import AddMovieFormGroup from "../AddMovieFormGroup";
 import { Multiselect } from "multiselect-react-dropdown";
 
 import { GENRE_TYPES, FORM_FIELDS_DATA } from "../../constants";
-import { v4 as uuidv4 } from "uuid";
+
+import { addMovie, getFilteredMovies } from "../../store/actionCreators";
+import { useDispatch } from "react-redux";
 
 interface IAddMovieProps {
   show: boolean;
   onHide: () => void;
   isSuccessSubmit: boolean;
-  handleSuccessSubmit: (newMovie: {}) => void;
+  handleSuccessSubmit: () => void;
 }
 
 const AddMovie: React.FC<IAddMovieProps> = (props) => {
@@ -18,6 +20,8 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const { isSuccessSubmit, handleSuccessSubmit, ...modalProps } = props;
   const multiselectRef = useRef(null);
+
+  const dispatch = useDispatch();
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -30,7 +34,7 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
     }
 
     const newMovie = {
-      id: uuidv4(),
+      id: Date.now(),
       title: form.elements.title.value,
       vote_average: form.elements["vote_average"].value,
       release_date: form.elements["release_date"].value,
@@ -41,7 +45,9 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
     };
 
     event.preventDefault();
-    handleSuccessSubmit(newMovie);
+    dispatch(addMovie(newMovie));
+    dispatch(getFilteredMovies());
+    handleSuccessSubmit();
     setValidated(true);
   };
 
@@ -114,7 +120,9 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
         ) : (
           <div className="d-flex flex-column">
             <h3 className="mt-4 text-success text-center">CONGRATULATIONS!</h3>
-            <p className="mt-2 mb-4 text-center">The movie has been added to database successfully</p>
+            <p className="mt-2 mb-4 text-center">
+              The movie has been added to database successfully
+            </p>
           </div>
         )}
       </Form>

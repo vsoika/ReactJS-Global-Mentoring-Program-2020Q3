@@ -5,33 +5,41 @@ import { Multiselect } from "multiselect-react-dropdown";
 
 import { GENRE_TYPES, FORM_FIELDS_DATA } from "../../constants";
 
+import { updateMovie, getFilteredMovies } from "../../store/actionCreators";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../store/reducers";
+
 interface IEditMovieProps {
   show: boolean;
   onHide: () => void;
-  movieId: string;
-  allMoviesList: any[];
-  handleSuccessEdit: (updatedAllMoviesList: any[]) => void;
+  movieId: number;
 }
 
 const EditMovie: React.FC<IEditMovieProps> = (props) => {
   const [validated, setValidated] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const { movieId, allMoviesList, handleSuccessEdit, ...modalProps } = props;
+  const { movieId, ...modalProps } = props;
   const multiselectRef = useRef(null);
-  
+
+  const dispatch = useDispatch();
+
+  const filteredMoviesList = useSelector(
+    (store: RootState) => store.movies.filteredMoviesList
+  );
+
   const selectedMovieGenres = useMemo(() => {
     if (movieId) {
-      const selectedMovie = allMoviesList.filter(
+      const selectedMovie = filteredMoviesList.filter(
         (movie) => movie.id === movieId
       );
-  
+
       if (selectedMovie.length) {
         return selectedMovie[0].genres.map((genre) => {
           return { key: genre, label: genre };
         });
       }
     }
-  }, [movieId, allMoviesList]);
+  }, [movieId, filteredMoviesList]);
 
   const handleSave = (event) => {
     event.preventDefault();
@@ -46,7 +54,8 @@ const EditMovie: React.FC<IEditMovieProps> = (props) => {
       return;
     }
 
-    const newMovie = {
+    const updatedMovie = {
+      id: movieId,
       title: form.elements.title.value,
       vote_average: form.elements["vote_average"].value,
       release_date: form.elements["release_date"].value,
@@ -56,15 +65,8 @@ const EditMovie: React.FC<IEditMovieProps> = (props) => {
       runtime: form.elements.runtime.value,
     };
 
-    const updatedAllMoviesList = allMoviesList.map((movie) => {
-      if (movie.id === movieId) {
-        movie = newMovie;
-        movie.id = movieId;
-      }
-      return movie;
-    });
-
-    handleSuccessEdit(updatedAllMoviesList);
+    dispatch(updateMovie(updatedMovie));
+    dispatch(getFilteredMovies());
     setValidated(true);
     const { onHide } = modalProps;
     onHide();
@@ -107,7 +109,6 @@ const EditMovie: React.FC<IEditMovieProps> = (props) => {
                   label={field.label}
                   formControlAttributes={field.formControlAttributes}
                   id={movieId}
-                  allMoviesList={allMoviesList}
                 />
               );
             })}

@@ -1,21 +1,26 @@
 import React from "react";
 import { Form } from "react-bootstrap";
 
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/reducers";
+
 interface IAddMovieFormGroupProps {
   label: string;
   formControlAttributes: any;
-  id?: string;
-  allMoviesList?: any[];
+  id?: number;
 }
 
 const AddMovieFormGroup: React.FC<IAddMovieFormGroupProps> = ({
   label,
   formControlAttributes,
   id,
-  allMoviesList,
 }) => {
-  const getDefaultValue = (id: string, formName: string) => {
-    const selectedMovie = allMoviesList.filter((movie) => movie.id === id);
+  const filteredMoviesList = useSelector(
+    (store: RootState) => store.movies.filteredMoviesList
+  );
+
+  const getDefaultValue = (id: number, formName: string) => {
+    const selectedMovie = filteredMoviesList.filter((movie) => movie.id === id);
     const movieFormValue = selectedMovie[0][formName];
     return movieFormValue;
   };

@@ -8,9 +8,7 @@ interface IMovieCardProps {
   title: string;
   release_date: string;
   id: number;
-  allMoviesList: any[];
-  handleSuccessEdit: (updatedAllMoviesList: any[]) => void;
-  showMovieDetails: (id: string) => void;
+  showMovieDetails: (id: number) => void;
 }
 
 const MovieCardItem: React.FC<IMovieCardProps> = ({
@@ -18,13 +16,11 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
   title,
   release_date,
   id,
-  allMoviesList,
-  handleSuccessEdit,
   showMovieDetails,
 }) => {
   const [editMovieModalShow, setEditMovieModalShow] = useState(false);
   const [deleteMovieModalShow, setDeleteMovieModalShow] = useState(false);
-  const [selectedMovieId, setSelectedMovieId] = useState("");
+  const [selectedMovieId, setSelectedMovieId] = useState(1);
 
   const showEditButton = (e) => {
     const card = e.currentTarget;
@@ -40,7 +36,9 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
 
   const handleDropdownButton = (e) => {
     const selectedOption = e.target.textContent;
-    const selectedMovieId = e.currentTarget.parentNode.getAttribute("id");
+    const selectedMovieId = Number(
+      e.currentTarget.parentNode.getAttribute("id")
+    );
 
     if (!selectedOption) return;
 
@@ -52,8 +50,9 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
   };
 
   const handleCardClick = (e) => {
-    showMovieDetails(e.currentTarget.parentNode.getAttribute("id"));
-  }
+    const movieId = Number(e.currentTarget.parentNode.getAttribute("id"));
+    showMovieDetails(movieId);
+  };
 
   return (
     <li
@@ -63,7 +62,10 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
       onMouseEnter={(e) => showEditButton(e)}
       onMouseLeave={(e) => hideEditButton(e)}
     >
-      <div className="movie-card__image-wrapper" onClick={(e) => handleCardClick(e)}>
+      <div
+        className="movie-card__image-wrapper"
+        onClick={(e) => handleCardClick(e)}
+      >
         <img className="movie-card__image" src={poster_path} alt={title}></img>
       </div>
       <div className="movie-card__description">
@@ -83,15 +85,11 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
         show={editMovieModalShow}
         onHide={() => setEditMovieModalShow(false)}
         movieId={selectedMovieId}
-        allMoviesList={allMoviesList}
-        handleSuccessEdit={handleSuccessEdit}
       />
       <DeleteMovie
         show={deleteMovieModalShow}
         onHide={() => setDeleteMovieModalShow(false)}
         movieId={selectedMovieId}
-        allMoviesList={allMoviesList}
-        handleSuccessEdit={handleSuccessEdit}
       />
     </li>
   );

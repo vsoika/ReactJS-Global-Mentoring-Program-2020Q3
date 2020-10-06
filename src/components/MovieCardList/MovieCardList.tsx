@@ -1,27 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import MovieCardItem from "../MovieCardItem";
 
 import "./MovieCardList.scss";
 
+import { getFilteredMovies } from "../../store/actionCreators";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../store/reducers";
+
 interface IResultContainerProps {
-  movieList: any[];
-  allMoviesList: any[];
-  handleSuccessEdit: (updatedAllMoviesList: any[]) => void;
-  showMovieDetails: (id: string) => void;
+  showMovieDetails: (id: number) => void;
 }
 
 const MovieCardList: React.FC<IResultContainerProps> = ({
-  movieList,
-  allMoviesList,
-  handleSuccessEdit,
   showMovieDetails,
 }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getFilteredMovies());
+  }, [dispatch]);
+
+  const filteredMoviesList = useSelector(
+    (store: RootState) => store.movies.filteredMoviesList
+  );
+
   return (
     <Row>
       <Col xs={12}>
         <ul className="list-unstyled list movies-list">
-          {movieList.map((movie) => {
+          {filteredMoviesList.map((movie) => {
             return (
               <MovieCardItem
                 key={movie.id}
@@ -29,8 +37,6 @@ const MovieCardList: React.FC<IResultContainerProps> = ({
                 poster_path={movie.poster_path}
                 title={movie.title}
                 release_date={movie.release_date}
-                allMoviesList={allMoviesList}
-                handleSuccessEdit={handleSuccessEdit}
                 showMovieDetails={showMovieDetails}
               />
             );
