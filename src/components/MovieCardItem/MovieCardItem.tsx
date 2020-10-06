@@ -9,6 +9,7 @@ interface IMovieCardProps {
   release_date: string;
   id: number;
   showMovieDetails: (id: number) => void;
+  hideMovieDetails: () => void;
 }
 
 const MovieCardItem: React.FC<IMovieCardProps> = ({
@@ -17,6 +18,7 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
   release_date,
   id,
   showMovieDetails,
+  hideMovieDetails,
 }) => {
   const [editMovieModalShow, setEditMovieModalShow] = useState(false);
   const [deleteMovieModalShow, setDeleteMovieModalShow] = useState(false);
@@ -90,6 +92,7 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
         show={deleteMovieModalShow}
         onHide={() => setDeleteMovieModalShow(false)}
         movieId={selectedMovieId}
+        hideMovieDetails={hideMovieDetails}
       />
     </li>
   );

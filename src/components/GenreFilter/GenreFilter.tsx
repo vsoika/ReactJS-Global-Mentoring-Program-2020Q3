@@ -8,13 +8,18 @@ import { setGenre, getFilteredMovies } from "../../store/actionCreators";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/reducers";
 
-const GenreFilter: React.FC = () => {
+interface IGenreFilterProps {
+  hideMovieDetails: () => void;
+}
+
+const GenreFilter: React.FC<IGenreFilterProps> = ({ hideMovieDetails }) => {
   const dispatch = useDispatch();
   const selectedGenre = useSelector(
     (store: RootState) => store.movies.selectedGenre
   );
 
   const handleSelect = (eventKey: string) => {
+    hideMovieDetails();
     dispatch(setGenre(eventKey));
     dispatch(getFilteredMovies());
   };

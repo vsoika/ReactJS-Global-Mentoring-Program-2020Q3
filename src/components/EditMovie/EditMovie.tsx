@@ -1,9 +1,14 @@
-import React, { useState, useRef, useMemo } from "react";
+import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { Formik, FormikProps, FormikHelpers } from "formik";
 import AddMovieFormGroup from "../AddMovieFormGroup";
-import { Multiselect } from "multiselect-react-dropdown";
-
-import { GENRE_TYPES, FORM_FIELDS_DATA } from "../../constants";
+import Select from "react-select";
+import {
+  GENRE_TYPES,
+  FORM_FIELDS_DATA,
+  SCHEMA,
+  IFormikValues,
+} from "../../constants";
 
 import { updateMovie, getFilteredMovies } from "../../store/actionCreators";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,72 +21,40 @@ interface IEditMovieProps {
 }
 
 const EditMovie: React.FC<IEditMovieProps> = (props) => {
-  const [validated, setValidated] = useState(false);
-  const [selectedGenres, setSelectedGenres] = useState([]);
   const { movieId, ...modalProps } = props;
-  const multiselectRef = useRef(null);
-
   const dispatch = useDispatch();
 
   const filteredMoviesList = useSelector(
     (store: RootState) => store.movies.filteredMoviesList
   );
 
-  const selectedMovieGenres = useMemo(() => {
-    if (movieId) {
-      const selectedMovie = filteredMoviesList.filter(
-        (movie) => movie.id === movieId
-      );
+  const selectedMovie = filteredMoviesList.filter((movie) => {
+    return movie.id === movieId;
+  });
 
-      if (selectedMovie.length) {
-        return selectedMovie[0].genres.map((genre) => {
-          return { key: genre, label: genre };
-        });
+  let selectedMovieGenres;
+
+  if (selectedMovie.length) {
+    selectedMovieGenres = selectedMovie[0].genres.map((item) => {
+      if (typeof item === "string") {
+        return {
+          label: item,
+          value: item,
+        };
       }
-    }
-  }, [movieId, filteredMoviesList]);
+      return item;
+    });
+  }
 
-  const handleSave = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const handleSaveForm = (values) => {
+    const genres = values.genres.map((genre) => genre.value);
+    values.id = movieId;
+    values.genres = genres[0] ? genres : selectedMovie[0].genres;
 
-    const form = event.currentTarget;
-
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-      return;
-    }
-
-    const updatedMovie = {
-      id: movieId,
-      title: form.elements.title.value,
-      vote_average: form.elements["vote_average"].value,
-      release_date: form.elements["release_date"].value,
-      poster_path: form.elements["poster_path"].value,
-      overview: form.elements.overview.value,
-      genres: selectedGenres.map((genre) => genre.label),
-      runtime: form.elements.runtime.value,
-    };
-
-    dispatch(updateMovie(updatedMovie));
+    dispatch(updateMovie(values));
     dispatch(getFilteredMovies());
-    setValidated(true);
     const { onHide } = modalProps;
     onHide();
-  };
-
-  const handleResetForm = (event) => {
-    const form = event.currentTarget;
-    event.preventDefault();
-
-    Array.from(form.querySelectorAll("input")).forEach(
-      (input: HTMLInputElement) => {
-        multiselectRef.current.resetSelectedValues();
-        input.value = "";
-      }
-    );
   };
 
   return (
@@ -93,54 +66,69 @@ const EditMovie: React.FC<IEditMovieProps> = (props) => {
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">EDIT MOVIE</Modal.Title>
       </Modal.Header>
-
-      <Form
-        noValidate
-        validated={validated}
-        onSubmit={handleSave}
-        onReset={handleResetForm}
+      <Formik
+        initialValues={selectedMovie[0]}
+        validationSchema={SCHEMA}
+        onSubmit={(
+          values: IFormikValues,
+          { setSubmitting, resetForm }: FormikHelpers<IFormikValues>
+        ) => {
+          setSubmitting(true);
+          handleSaveForm(values);
+          resetForm();
+          setSubmitting(false);
+        }}
       >
-        <>
-          <Modal.Body>
-            {Object.values(FORM_FIELDS_DATA).map((field) => {
-              return (
-                <AddMovieFormGroup
-                  key={field.label}
-                  label={field.label}
-                  formControlAttributes={field.formControlAttributes}
-                  id={movieId}
-                />
-              );
-            })}
-            <Form.Group controlId="genre">
-              <Form.Label>Genre</Form.Label>
-              <Multiselect
-                options={GENRE_TYPES}
-                displayValue="key"
-                name="genre"
-                required
-                showCheckbox={true}
-                ref={multiselectRef}
-                selectedValues={selectedMovieGenres}
-                onSelect={(selected) => {
-                  setSelectedGenres(selected);
-                }}
-                onRemove={(selected) => {
-                  setSelectedGenres(selected);
-                }}
-              />
-            </Form.Group>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button type="submit" variant="outline-dark">
-              Save
-            </Button>
-            <Button type="reset" variant="outline-dark">
-              Reset
-            </Button>
-          </Modal.Footer>
-        </>
-      </Form>
+        {({ ...formikProps }: FormikProps<IFormikValues>) => (
+          <Form
+            noValidate
+            onSubmit={formikProps.handleSubmit}
+            onReset={formikProps.handleReset}
+          >
+            <>
+              <Modal.Body>
+                {Object.values(FORM_FIELDS_DATA).map((field) => {
+                  return (
+                    <AddMovieFormGroup
+                      key={field.label}
+                      label={field.label}
+                      formControlAttributes={field.formControlAttributes}
+                      formikProps={formikProps}
+                    />
+                  );
+                })}
+                <Form.Group controlId="genre">
+                  <Form.Label>Genre</Form.Label>
+                  <Select
+                    name="genre"
+                    onChange={(selectedGenres) =>
+                      formikProps.setFieldValue(
+                        "genres",
+                        selectedGenres ? selectedGenres : []
+                      )
+                    }
+                    options={GENRE_TYPES}
+                    isMulti={true}
+                    isInvalid={!!formikProps.errors.genres}
+                    defaultValue={selectedMovieGenres}
+                  />
+                  <Form.Control.Feedback type="invalid" className="d-block">
+                    {formikProps.errors.genres}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button type="submit" variant="outline-dark">
+                  Save
+                </Button>
+                <Button type="reset" variant="outline-dark">
+                  Reset
+                </Button>
+              </Modal.Footer>
+            </>
+          </Form>
+        )}
+      </Formik>
     </Modal>
   );
 };

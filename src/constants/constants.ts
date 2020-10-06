@@ -1,3 +1,5 @@
+import * as yup from "yup";
+
 export const MOVIES_DATA_URL = "http://localhost:4000/movies";
 
 export const SORT_OPTIONS = {
@@ -15,24 +17,24 @@ export const GENRE_OPTIONS = {
 };
 
 export const GENRE_TYPES = [
-  { key: "Drama", label: "Drama" },
-  { key: "Animation", label: "Animation" },
-  { key: "Adventure", label: "Adventure" },
-  { key: "Family", label: "Family" },
-  { key: "Comedy", label: "Comedy" },
-  { key: "Fantasy", label: "Fantasy" },
-  { key: "Action", label: "Action" },
-  { key: "Science Fiction", label: "Science Fiction" },
-  { key: "Romance", label: "Romance" },
-  { key: "Mystery", label: "Mystery" },
-  { key: "Thriller", label: "Thriller" },
-  { key: "Music", label: "Music" },
-  { key: "Horror", label: "Horror" },
-  { key: "Crime", label: "Crime" },
-  { key: "War", label: "War" },
-  { key: "History", label: "History" },
-  { key: "Western", label: "Western" },
-  { key: "Documentary", label: "Documentary" },
+  { value: "Drama", label: "Drama" },
+  { value: "Animation", label: "Animation" },
+  { value: "Adventure", label: "Adventure" },
+  { value: "Family", label: "Family" },
+  { value: "Comedy", label: "Comedy" },
+  { value: "Fantasy", label: "Fantasy" },
+  { value: "Action", label: "Action" },
+  { value: "Science Fiction", label: "Science Fiction" },
+  { value: "Romance", label: "Romance" },
+  { value: "Mystery", label: "Mystery" },
+  { value: "Thriller", label: "Thriller" },
+  { value: "Music", label: "Music" },
+  { value: "Horror", label: "Horror" },
+  { value: "Crime", label: "Crime" },
+  { value: "War", label: "War" },
+  { value: "History", label: "History" },
+  { value: "Western", label: "Western" },
+  { value: "Documentary", label: "Documentary" },
 ];
 
 export const FORM_FIELDS_DATA = {
@@ -87,3 +89,36 @@ export const FORM_FIELDS_DATA = {
     },
   },
 };
+
+export const SCHEMA = yup.object({
+  title: yup.string().required(),
+  vote_average: yup
+    .number()
+    .min(0, "Rating must be greater than 0")
+    .max(10, "Rating can't be greater than 10")
+    .min(0, "Rating must be greater than 0")
+    .required("rating is required field"),
+  release_date: yup.date().required("release date is required field"),
+  poster_path: yup
+    .string()
+    .url("*Must enter URL in http://www.example.com format")
+    .required("url is required field"),
+  overview: yup.string().required(),
+  genres: yup.array().min(1, "Pick at least 1 option"),
+  runtime: yup.number().min(0, "Rating must be greater than 0").required(),
+});
+
+export interface IFormikValues {
+  id?: number,
+  title: string,
+  vote_average: number,
+  release_date: string,
+  poster_path: string,
+  overview: string,
+  runtime: number,
+  genres: string[] | undefined[],
+  tagline?: string,
+  vote_count?: number,
+  budget?: number,
+  revenue?: number,
+}

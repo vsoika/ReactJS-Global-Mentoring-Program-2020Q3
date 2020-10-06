@@ -10,10 +10,12 @@ import { RootState } from "../../store/reducers";
 
 interface IResultContainerProps {
   showMovieDetails: (id: number) => void;
+  hideMovieDetails: () => void;
 }
 
 const MovieCardList: React.FC<IResultContainerProps> = ({
   showMovieDetails,
+  hideMovieDetails,
 }) => {
   const dispatch = useDispatch();
 
@@ -38,6 +40,7 @@ const MovieCardList: React.FC<IResultContainerProps> = ({
                 title={movie.title}
                 release_date={movie.release_date}
                 showMovieDetails={showMovieDetails}
+                hideMovieDetails={hideMovieDetails}
               />
             );
           })}
