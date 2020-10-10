@@ -48,7 +48,11 @@ const movies = (state = initialState, action: { type: string; payload }) => {
 
       const filteredList =
         genre !== GENRE_OPTIONS.all
-          ? moviesList.filter((movie) => movie.genres.includes(genre))
+          ? moviesList.filter((movie) => {
+              return movie.genres.some((item) => {
+                return item === genre;
+              });
+            })
           : moviesList;
 
       sortOption === SORT_OPTIONS.duration

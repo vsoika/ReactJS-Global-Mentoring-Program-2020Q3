@@ -1,42 +1,32 @@
 import React from "react";
 import { Form } from "react-bootstrap";
-
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/reducers";
+import { FormikProps } from "formik";
+import { IFormikValues } from "../../constants";
 
 interface IAddMovieFormGroupProps {
   label: string;
-  formControlAttributes: any;
-  id?: number;
+  formControlAttributes: { [key: string]: string };
+  formikProps: FormikProps<IFormikValues>;
 }
 
 const AddMovieFormGroup: React.FC<IAddMovieFormGroupProps> = ({
   label,
   formControlAttributes,
-  id,
+  formikProps,
 }) => {
-  const filteredMoviesList = useSelector(
-    (store: RootState) => store.movies.filteredMoviesList
-  );
-
-  const getDefaultValue = (id: number, formName: string) => {
-    const selectedMovie = filteredMoviesList.filter((movie) => movie.id === id);
-    const movieFormValue = selectedMovie[0][formName];
-    return movieFormValue;
-  };
+  const { values, errors, handleChange } = formikProps;
 
   return (
     <Form.Group controlId={formControlAttributes.name}>
       <Form.Label>{label}</Form.Label>
       <Form.Control
         {...formControlAttributes}
-        defaultValue={
-          id ? getDefaultValue(id, formControlAttributes.name) : null
-        }
-        required
+        value={values[formControlAttributes.name]}
+        onChange={handleChange}
+        isInvalid={!!errors[formControlAttributes.name]}
       />
       <Form.Control.Feedback type="invalid">
-        {label} is required field.
+        {errors[formControlAttributes.name]}
       </Form.Control.Feedback>
     </Form.Group>
   );

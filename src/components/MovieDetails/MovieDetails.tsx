@@ -18,10 +18,7 @@ const MovieDetails: React.FC<IMovieDetailsProps> = ({
   const filteredMoviesList = useSelector(
     (store: RootState) => store.movies.filteredMoviesList
   );
-  const movie = useMemo(
-    () => filteredMoviesList.filter((movie) => movie.id === movieId),
-    [filteredMoviesList, movieId]
-  );
+  const movie = filteredMoviesList.filter((movie) => movie.id === movieId);
 
   const {
     title,

@@ -101,14 +101,14 @@ const App: React.FC = () => {
           </div>
           <Container>
             <Row className="filter-wrapper mt-3">
-              <GenreFilter />
+              <GenreFilter hideMovieDetails={hideMovieDetails} />
               <ResultsSort />
             </Row>
 
             <Row className="movies-count">
               <Col xs={12}>{filteredMoviesList.length} movies found</Col>
             </Row>
-            {<MovieCardList showMovieDetails={showMovieDetails} />}
+            {<MovieCardList showMovieDetails={showMovieDetails} hideMovieDetails={hideMovieDetails}/>}
           </Container>
         </>
       )}
