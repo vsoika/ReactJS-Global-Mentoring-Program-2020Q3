@@ -8,15 +8,7 @@ import { getFilteredMovies } from "../../store/actionCreators";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/reducers";
 
-interface IResultContainerProps {
-  showMovieDetails: (id: number) => void;
-  hideMovieDetails: () => void;
-}
-
-const MovieCardList: React.FC<IResultContainerProps> = ({
-  showMovieDetails,
-  hideMovieDetails,
-}) => {
+const MovieCardList: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,8 +31,6 @@ const MovieCardList: React.FC<IResultContainerProps> = ({
                 poster_path={movie.poster_path}
                 title={movie.title}
                 release_date={movie.release_date}
-                showMovieDetails={showMovieDetails}
-                hideMovieDetails={hideMovieDetails}
               />
             );
           })}

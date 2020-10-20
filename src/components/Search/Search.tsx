@@ -3,21 +3,21 @@ import { Button, InputGroup, FormControl, Col } from "react-bootstrap";
 
 import { getFilteredMovies } from "../../store/actionCreators";
 import { useDispatch } from "react-redux";
-import { RootState } from "../../store/reducers";
+import { useHistory } from "react-router-dom";
 
-interface ISearchProps {
-  handleSearchInputChange: (inputMovie: string) => void;
-}
-
-const Search: React.FC<ISearchProps> = ({ handleSearchInputChange }) => {
+const Search: React.FC = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const getInputMovie = () => {
     const inputValue = document.getElementById(
       "inputMovie"
     ) as HTMLInputElement;
     const inputMovie = inputValue.value.trim();
-    handleSearchInputChange(inputMovie);
+
+    if(inputMovie !== '') {
+      history.push(`/search/search?title=${inputMovie}`)
+    }
   };
 
   const handleKeyPress = (event) => {

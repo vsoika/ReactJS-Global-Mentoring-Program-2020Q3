@@ -2,7 +2,7 @@ import React from "react";
 import { Image, Container } from "react-bootstrap";
 import imagePath from "../../assets/icons/noFound.png";
 import imageMobilePath from "../../assets/icons/noFound-mobile.png";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const NoMatch: React.FC = () => {
   return (

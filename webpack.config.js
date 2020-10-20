@@ -34,6 +34,7 @@ const config = {
   output: {
     filename: "[name].js",
     path: path.resolve(__dirname, "dist"),
+    publicPath: '/',
   },
   devServer: {
     contentBase: path.join(__dirname, "dist"),
@@ -85,7 +86,6 @@ const config = {
     }),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
-      favicon: "./src/assets/icons/favicon.ico",
       filename: "./index.html",
     }),
   ],

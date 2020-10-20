@@ -8,15 +8,13 @@ interface IDeleteMovieProps {
   show: boolean;
   onHide: () => void;
   movieId: number;
-  hideMovieDetails: () => void;
 }
 
 const DeleteMovie: React.FC<IDeleteMovieProps> = (props) => {
-  const { movieId, hideMovieDetails, ...modalProps } = props;
+  const { movieId, ...modalProps } = props;
   const dispatch = useDispatch();
 
   const handleDeleteMovie = () => {
-    hideMovieDetails();
     dispatch(deleteMovie(movieId));
     dispatch(getFilteredMovies());
   };
