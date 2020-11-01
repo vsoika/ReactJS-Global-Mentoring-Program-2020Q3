@@ -1,28 +1,28 @@
-const path = require('path');
-const webpack = require('webpack');
-require('dotenv').config();
+const path = require("path");
+const webpack = require("webpack");
+require("dotenv").config();
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 
 const ENV = process.env.NODE_ENV;
-const isDev = ENV === 'development';
-const isProd = ENV === 'production';
+const isDev = ENV === "development";
+const isProd = ENV === "production";
 
 function setDevTool() {
   if (isDev) {
-    return 'eval-source-map';
+    return "eval-source-map";
   } else {
-    return 'source-map';
+    return "source-map";
   }
 }
 
 function setDMode() {
   if (isProd) {
-    return 'production';
+    return "production";
   } else {
-    return 'development';
+    return "development";
   }
 }
 
@@ -32,49 +32,52 @@ const config = {
   watch: true,
   entry: "./src/index.jsx",
   output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: "[name].js",
+    path: path.resolve(__dirname, "dist"),
+    publicPath: '/',
   },
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.join(__dirname, "dist"),
     port: 7000,
+    historyApiFallback: true,
+    hot: true,
   },
 
   module: {
     rules: [
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.s[ac]ss$/i,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: ["style-loader", "css-loader", "sass-loader"],
       },
       {
         test: /\.(png|svg|jpg|gif|ico)$/,
-        use: 'file-loader',
+        use: "file-loader",
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: 'file-loader',
+        use: "file-loader",
       },
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
         },
       },
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        use: "ts-loader",
         exclude: /node_modules/,
       },
     ],
   },
-  
+
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    extensions: [".js", ".jsx", ".ts", ".tsx"],
   },
 
   plugins: [
@@ -83,16 +86,13 @@ const config = {
     }),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
-      favicon: './src/assets/icons/favicon.ico',
       filename: "./index.html",
     }),
   ],
 };
 
 if (isProd) {
-  config.plugins.push(
-    new UglifyJSPlugin(),
-  );
+  config.plugins.push(new UglifyJSPlugin());
 }
 
 module.exports = config;

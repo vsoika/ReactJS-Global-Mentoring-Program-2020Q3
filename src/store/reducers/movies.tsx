@@ -3,8 +3,9 @@ import { SORT_OPTIONS, GENRE_OPTIONS } from "../../constants";
 
 const initialState = {
   moviesList: [],
-  pending: null,
+  fulfilled: false,
   filteredMoviesList: [],
+  isFiltered: false,
   sortOption: SORT_OPTIONS.release,
   selectedGenre: GENRE_OPTIONS.all,
 };
@@ -20,19 +21,19 @@ const movies = (state = initialState, action: { type: string; payload }) => {
     case `${ACTIONS.FETCH_MOVIES}${REQUEST_STATE.PENDING}`:
       return {
         ...state,
-        pending: true,
+        fulfilled: false,
       };
     case `${ACTIONS.FETCH_MOVIES}${REQUEST_STATE.SUCCESS}`:
       return {
         ...state,
         moviesList: payload,
-        pending: false,
+        fulfilled: true,
       };
 
     case `${ACTIONS.FETCH_MOVIES}${REQUEST_STATE.ERROR}`:
       return {
         ...state,
-        pending: false,
+        fulfilled: false,
       };
 
     case ACTIONS.SET_SORT_OPTION:
@@ -61,7 +62,7 @@ const movies = (state = initialState, action: { type: string; payload }) => {
         ? filteredList.sort(sortByOption("vote_average"))
         : filteredList.sort(sortByOption("release_date"));
 
-      return { ...state, filteredMoviesList: filteredList };
+      return { ...state, filteredMoviesList: filteredList, isFiltered: true };
 
     case ACTIONS.ADD_MOVIE:
       return { ...state, moviesList: [...state.moviesList, payload.newMovie] };
@@ -93,7 +94,7 @@ const movies = (state = initialState, action: { type: string; payload }) => {
         return movie.title.trim().toLowerCase().includes(searchMovie);
       });
 
-      return { ...state, filteredMoviesList: searchMovies };
+      return { ...state, filteredMoviesList: searchMovies, isFiltered: true };
 
     default:
       return state;

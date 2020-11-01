@@ -3,13 +3,13 @@ import { Dropdown, DropdownButton } from "react-bootstrap";
 import EditMovie from "../EditMovie";
 import DeleteMovie from "../DeleteMovie";
 
+import { Link } from "react-router-dom";
+
 interface IMovieCardProps {
   poster_path: string;
   title: string;
   release_date: string;
   id: number;
-  showMovieDetails: (id: number) => void;
-  hideMovieDetails: () => void;
 }
 
 const MovieCardItem: React.FC<IMovieCardProps> = ({
@@ -17,8 +17,6 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
   title,
   release_date,
   id,
-  showMovieDetails,
-  hideMovieDetails,
 }) => {
   const [editMovieModalShow, setEditMovieModalShow] = useState(false);
   const [deleteMovieModalShow, setDeleteMovieModalShow] = useState(false);
@@ -51,11 +49,6 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
     setSelectedMovieId(selectedMovieId);
   };
 
-  const handleCardClick = (e) => {
-    const movieId = Number(e.currentTarget.parentNode.getAttribute("id"));
-    showMovieDetails(movieId);
-  };
-
   return (
     <li
       className="movie-card mr-sm-3"
@@ -64,12 +57,15 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
       onMouseEnter={(e) => showEditButton(e)}
       onMouseLeave={(e) => hideEditButton(e)}
     >
-      <div
-        className="movie-card__image-wrapper"
-        onClick={(e) => handleCardClick(e)}
-      >
-        <img className="movie-card__image" src={poster_path} alt={title}></img>
-      </div>
+      <Link to={`/film/${id}`}>
+        <div className="movie-card__image-wrapper">
+          <img
+            className="movie-card__image"
+            src={poster_path}
+            alt={title}
+          ></img>
+        </div>
+      </Link>
       <div className="movie-card__description">
         <h5 className="movie-card__title">{title}</h5>
         <p className="movie-card__release-date">{release_date.slice(0, 4)}</p>
@@ -92,7 +88,6 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
         show={deleteMovieModalShow}
         onHide={() => setDeleteMovieModalShow(false)}
         movieId={selectedMovieId}
-        hideMovieDetails={hideMovieDetails}
       />
     </li>
   );

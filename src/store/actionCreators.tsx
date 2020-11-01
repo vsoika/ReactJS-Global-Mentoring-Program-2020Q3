@@ -16,8 +16,30 @@ export const fetchMovies = () => {
         });
       })
       .catch((err) => {
-        console.error("Server doesn't response", err);
-        dispatch({ type: `${ACTIONS.FETCH_MOVIES}${REQUEST_STATE.ERROR}` });
+        console.warn("Server doesn't response", err);
+        dispatch({
+          type: `${ACTIONS.FETCH_MOVIES}${REQUEST_STATE.ERROR}`,
+        });
+      });
+  };
+};
+
+export const fetchMoviesById = (id) => {
+  return (dispatch: Dispatch) => {
+    dispatch({ type: `${ACTIONS.FETCH_MOVIES_BY_ID}${REQUEST_STATE.PENDING}` });
+    axios
+      .get(`${MOVIES_DATA_URL}/${id}`)
+      .then((response) => {
+        dispatch({
+          type: `${ACTIONS.FETCH_MOVIES_BY_ID}${REQUEST_STATE.SUCCESS}`,
+          payload: response.data,
+        });
+      })
+      .catch((err) => {
+        console.warn("Server doesn't response", err);
+        dispatch({
+          type: `${ACTIONS.FETCH_MOVIES_BY_ID}${REQUEST_STATE.ERROR}`,
+        });
       });
   };
 };
