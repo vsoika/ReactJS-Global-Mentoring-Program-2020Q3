@@ -6,7 +6,7 @@ import { ACTIONS, REQUEST_STATE } from "./actionTypes";
 export const fetchMovies = () => {
   return (dispatch: Dispatch) => {
     dispatch({ type: `${ACTIONS.FETCH_MOVIES}${REQUEST_STATE.PENDING}` });
-    axios
+    return axios
       .get(MOVIES_DATA_URL)
       .then((response) => {
         const movies = response.data.data;
@@ -27,7 +27,7 @@ export const fetchMovies = () => {
 export const fetchMoviesById = (id) => {
   return (dispatch: Dispatch) => {
     dispatch({ type: `${ACTIONS.FETCH_MOVIES_BY_ID}${REQUEST_STATE.PENDING}` });
-    axios
+    return axios
       .get(`${MOVIES_DATA_URL}/${id}`)
       .then((response) => {
         dispatch({
@@ -58,20 +58,47 @@ export const getFilteredMovies = () => ({
   type: ACTIONS.GET_FILTERED_MOVIES,
 });
 
-export const addMovie = (newMovie) => ({
-  type: ACTIONS.ADD_MOVIE,
-  payload: { newMovie },
-});
+export const addMovie = (newMovie) => async (dispatch) => {
+  try {
+    const response = await axios.post(MOVIES_DATA_URL, newMovie);
+    dispatch({
+      type: ACTIONS.ADD_MOVIE,
+      payload: { newMovie: response.data },
+    });
+    dispatch(getFilteredMovies());
+  } catch (err) {
+    console.warn("Movie has not been added", err);
+  }
+};
 
-export const updateMovie = (updatedMovie) => ({
-  type: ACTIONS.UPDATE_MOVIE,
-  payload: { updatedMovie },
-});
+export const updateMovie = (updatedMovie) => async (dispatch) => {
+  try {
+    const response = await axios.put(MOVIES_DATA_URL, updatedMovie);
+    dispatch({
+      type: ACTIONS.UPDATE_MOVIE,
+      payload: { updatedMovie: response.data },
+    });
 
-export const deleteMovie = (movieId) => ({
-  type: ACTIONS.DELETE_MOVIE,
-  payload: { movieId },
-});
+    dispatch(getFilteredMovies());
+  } catch (err) {
+    console.warn("Movie has not been updated", err);
+  }
+};
+
+export const deleteMovie = (movieId) => async (dispatch) => {
+  try {
+    const response = await axios.delete(`${MOVIES_DATA_URL}/${movieId}`);
+    console.log(response)
+    dispatch({
+      type: ACTIONS.DELETE_MOVIE,
+      payload: { movieId },
+    });
+
+    dispatch(getFilteredMovies());
+  } catch (err) {
+    console.warn("Movie has not been deleted", err);
+  }
+};
 
 export const getMoviesBySearchInput = (searchValue) => ({
   type: ACTIONS.GET_MOVIES_BY_SEARCH_INPUT,

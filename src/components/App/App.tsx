@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Spinner } from "react-bootstrap";
-import Main from "./Main";
-import SearchContainer from "./SearchContainer";
+import Main from "../Main";
+import SearchContainer from "../SearchContainer";
 
 import {
   fetchMovies,
   getMoviesBySearchInput,
   getFilteredMovies,
-} from "../store/actionCreators";
+} from "../../store/actionCreators";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../store/reducers";
+import { RootState } from "../../store/reducers";
 
 import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";

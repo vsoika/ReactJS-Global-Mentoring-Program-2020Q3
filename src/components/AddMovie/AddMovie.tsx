@@ -27,10 +27,9 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
 
   const handleSubmitForm = (values) => {
     const genres = values.genres.map((genre) => genre.value);
-    values.id = Date.now();
     values.genres = genres;
+
     dispatch(addMovie(values));
-    dispatch(getFilteredMovies());
     handleSuccessSubmit();
   };
 

@@ -34,7 +34,7 @@ const config = {
   output: {
     filename: "[name].js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: '/',
+    publicPath: "/",
   },
   devServer: {
     contentBase: path.join(__dirname, "dist"),
@@ -78,6 +78,9 @@ const config = {
 
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
+    alias: {
+      "react-router-dom": path.resolve("./node_modules/react-router-dom"),
+    },
   },
 
   plugins: [
