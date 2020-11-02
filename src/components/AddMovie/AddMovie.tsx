@@ -10,7 +10,7 @@ import {
   IFormikValues,
 } from "../../constants";
 
-import { addMovie, getFilteredMovies } from "../../store/actionCreators";
+import { addMovie } from "../../store/actionCreators";
 import { useDispatch } from "react-redux";
 
 interface IAddMovieProps {
@@ -26,6 +26,7 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
   const dispatch = useDispatch();
 
   const handleSubmitForm = (values) => {
+    console.log(55555)
     const genres = values.genres.map((genre) => genre.value);
     values.genres = genres;
 
@@ -71,6 +72,7 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
             noValidate
             onSubmit={formikProps.handleSubmit}
             onReset={formikProps.handleReset}
+            data-testid="form"
           >
             {!isSuccessSubmit ? (
               <>
@@ -88,6 +90,7 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
                   <Form.Group controlId="genre">
                     <Form.Label>Genre</Form.Label>
                     <Select
+                      inputId="genre"
                       name="genre"
                       onChange={(selectedGenres) =>
                         formikProps.setFieldValue(
@@ -108,6 +111,7 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
                   <Button
                     type="submit"
                     variant="outline-dark"
+                    data-testid="submit-button"
                     disabled={formikProps.isSubmitting}
                   >
                     Submit

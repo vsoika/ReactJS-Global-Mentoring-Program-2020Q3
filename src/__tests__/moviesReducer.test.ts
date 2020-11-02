@@ -56,7 +56,7 @@ describe("Movies reducer", () => {
       })
     ).toEqual({
       ...state,
-      moviesList: [{ id: 335984, title: "Blade", vote_average: 7.3 }],
+      moviesList: [updatedMovie],
     });
   });
 

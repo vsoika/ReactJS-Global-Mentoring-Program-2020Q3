@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test suits for GenreFilterItem renders GenreFilterItem component 1`] = `
+<a
+  class="nav-link"
+  href="#"
+  role="button"
+>
+  Documentary
+</a>
+`;
