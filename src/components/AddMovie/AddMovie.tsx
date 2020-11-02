@@ -26,7 +26,6 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
   const dispatch = useDispatch();
 
   const handleSubmitForm = (values) => {
-    console.log(55555)
     const genres = values.genres.map((genre) => genre.value);
     values.genres = genres;
 
