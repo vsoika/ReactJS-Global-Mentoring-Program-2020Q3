@@ -10,7 +10,7 @@ const initialState = {
   selectedGenre: GENRE_OPTIONS.all,
 };
 
-const movies = (state = initialState, action: { type: string; payload }) => {
+const movies = (state = initialState, action: { type: string; payload? }) => {
   const { type, payload } = action;
 
   const sortByOption = (sortOption: string) => {

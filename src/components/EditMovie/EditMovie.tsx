@@ -52,7 +52,6 @@ const EditMovie: React.FC<IEditMovieProps> = (props) => {
     values.genres = genres[0] ? genres : selectedMovie[0].genres;
 
     dispatch(updateMovie(values));
-    dispatch(getFilteredMovies());
     const { onHide } = modalProps;
     onHide();
   };
