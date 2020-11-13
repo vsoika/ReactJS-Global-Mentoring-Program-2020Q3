@@ -14,7 +14,7 @@ const MovieDetailsContainer: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchMoviesById(id));
-  }, [id]);
+  }, []);
 
   const store = useSelector((store: RootState) => store.search);
   const { fulfilledById } = store;
@@ -35,4 +35,7 @@ const MovieDetailsContainer: React.FC = () => {
   );
 };
 
-export default MovieDetailsContainer;
+export default {
+  component: MovieDetailsContainer,
+  loadData: (dispatch, id) => dispatch(fetchMoviesById(id)),
+};
