@@ -23,11 +23,12 @@ const App: React.FC = () => {
   const history = useHistory();
   const searchQuery = queryString.parse(location.search);
 
-  useEffect(() => {
-    if (history.action !== "PUSH") {
-      dispatch(fetchMovies());
-    }
-  }, [dispatch]);
+  // useEffect(() => {
+  //   if (history.action !== "PUSH") {
+  //     console.log(555);
+  //     dispatch(fetchMovies());
+  //   }
+  // }, [dispatch]);
 
   if (searchMovie !== searchQuery.title) {
     setSearchMovie(searchQuery.title as string);
@@ -42,7 +43,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (fulfilled) {
-      dispatch(getFilteredMovies());
+      // dispatch(getFilteredMovies());
 
       if (searchMovie && isFiltered) {
         dispatch(getMoviesBySearchInput(searchMovie));
@@ -68,4 +69,7 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default {
+  component: App,
+  loadData: (dispatch, searchMovie) => dispatch(fetchMovies(searchMovie)),
+};

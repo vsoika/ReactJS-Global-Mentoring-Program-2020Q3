@@ -3,7 +3,11 @@ import { Dispatch } from "redux";
 import { MOVIES_DATA_URL } from "../constants";
 import { ACTIONS, REQUEST_STATE } from "./actionTypes";
 
-export const fetchMovies = () => {
+export const getFilteredMovies = () => ({
+  type: ACTIONS.GET_FILTERED_MOVIES,
+});
+
+export const fetchMovies = (searchMovie = null) => {
   return (dispatch: Dispatch) => {
     dispatch({ type: `${ACTIONS.FETCH_MOVIES}${REQUEST_STATE.PENDING}` });
     return axios
@@ -14,6 +18,11 @@ export const fetchMovies = () => {
           type: `${ACTIONS.FETCH_MOVIES}${REQUEST_STATE.SUCCESS}`,
           payload: movies,
         });
+        dispatch(getFilteredMovies());
+
+        if (searchMovie) {
+          dispatch(getMoviesBySearchInput(searchMovie));
+        }
       })
       .catch((err) => {
         console.warn("Server doesn't response", err);
@@ -34,6 +43,7 @@ export const fetchMoviesById = (id) => {
           type: `${ACTIONS.FETCH_MOVIES_BY_ID}${REQUEST_STATE.SUCCESS}`,
           payload: response.data,
         });
+        dispatch(getFilteredMovies());
       })
       .catch((err) => {
         console.warn("Server doesn't response", err);
@@ -52,10 +62,6 @@ export const setSortOption = (option) => ({
 export const setGenre = (genre) => ({
   type: ACTIONS.SET_GENRE,
   payload: { genre },
-});
-
-export const getFilteredMovies = () => ({
-  type: ACTIONS.GET_FILTERED_MOVIES,
 });
 
 export const addMovie = (newMovie) => async (dispatch) => {
@@ -87,8 +93,8 @@ export const updateMovie = (updatedMovie) => async (dispatch) => {
 
 export const deleteMovie = (movieId) => async (dispatch) => {
   try {
-    const response = await axios.delete(`${MOVIES_DATA_URL}/${movieId}`);
-    console.log(response)
+    await axios.delete(`${MOVIES_DATA_URL}/${movieId}`);
+
     dispatch({
       type: ACTIONS.DELETE_MOVIE,
       payload: { movieId },

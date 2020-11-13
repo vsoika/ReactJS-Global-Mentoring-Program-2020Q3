@@ -30,29 +30,14 @@ const config = {
   mode: setDMode(),
   devtool: setDevTool(),
   watch: true,
-  entry: "./src/index.jsx",
+
   output: {
-    filename: "[name].js",
-    path: path.resolve(__dirname, "dist"),
-    publicPath: "/",
-  },
-  devServer: {
-    contentBase: path.join(__dirname, "dist"),
-    port: 7000,
-    historyApiFallback: true,
-    hot: true,
+    filename: "js/[name].js",
+    path: path.resolve("./public"),
   },
 
   module: {
     rules: [
-      {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"],
-      },
-      {
-        test: /\.s[ac]ss$/i,
-        use: ["style-loader", "css-loader", "sass-loader"],
-      },
       {
         test: /\.(png|svg|jpg|gif|ico)$/,
         use: "file-loader",
@@ -79,19 +64,10 @@ const config = {
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
     alias: {
-      "react-router-dom": path.resolve("./node_modules/react-router-dom"),
+      // "react-router-dom": path.resolve("./node_modules/react-router-dom"),
+      // "react-dom": "@hot-loader/react-dom",
     },
   },
-
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: "style.css",
-    }),
-    new HtmlWebpackPlugin({
-      template: "./public/index.html",
-      filename: "./index.html",
-    }),
-  ],
 };
 
 if (isProd) {
