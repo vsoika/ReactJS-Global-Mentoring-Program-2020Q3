@@ -1,48 +1,16 @@
 import axios from "axios";
-import { Dispatch } from "redux";
 import { MOVIES_DATA_URL } from "../constants";
-import { ACTIONS, REQUEST_STATE } from "./actionTypes";
+import { ACTIONS } from "./actionTypes";
 
-export const fetchMovies = () => {
-  return (dispatch: Dispatch) => {
-    dispatch({ type: `${ACTIONS.FETCH_MOVIES}${REQUEST_STATE.PENDING}` });
-    return axios
-      .get(MOVIES_DATA_URL)
-      .then((response) => {
-        const movies = response.data.data;
-        dispatch({
-          type: `${ACTIONS.FETCH_MOVIES}${REQUEST_STATE.SUCCESS}`,
-          payload: movies,
-        });
-      })
-      .catch((err) => {
-        console.warn("Server doesn't response", err);
-        dispatch({
-          type: `${ACTIONS.FETCH_MOVIES}${REQUEST_STATE.ERROR}`,
-        });
-      });
-  };
-};
+export const pushMoviesToStore = (movies) => ({
+  type: ACTIONS.PUSH_MOVIES_TO_STORE,
+  payload: { movies },
+})
 
-export const fetchMoviesById = (id) => {
-  return (dispatch: Dispatch) => {
-    dispatch({ type: `${ACTIONS.FETCH_MOVIES_BY_ID}${REQUEST_STATE.PENDING}` });
-    return axios
-      .get(`${MOVIES_DATA_URL}/${id}`)
-      .then((response) => {
-        dispatch({
-          type: `${ACTIONS.FETCH_MOVIES_BY_ID}${REQUEST_STATE.SUCCESS}`,
-          payload: response.data,
-        });
-      })
-      .catch((err) => {
-        console.warn("Server doesn't response", err);
-        dispatch({
-          type: `${ACTIONS.FETCH_MOVIES_BY_ID}${REQUEST_STATE.ERROR}`,
-        });
-      });
-  };
-};
+export const pushMovieById = (movie) =>  ({
+  type: ACTIONS.PUSH_MOVIE_BY_ID,
+  payload: { movie },
+})
 
 export const setSortOption = (option) => ({
   type: ACTIONS.SET_SORT_OPTION,
@@ -61,6 +29,7 @@ export const getFilteredMovies = () => ({
 export const addMovie = (newMovie) => async (dispatch) => {
   try {
     const response = await axios.post(MOVIES_DATA_URL, newMovie);
+    console.log(response)
     dispatch({
       type: ACTIONS.ADD_MOVIE,
       payload: { newMovie: response.data },

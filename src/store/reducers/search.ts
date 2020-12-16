@@ -1,4 +1,4 @@
-import { ACTIONS, REQUEST_STATE } from "../actionTypes";
+import { ACTIONS } from "../actionTypes";
 
 const initialState = {
   movieById: {},
@@ -10,23 +10,11 @@ const search = (state = initialState, action: { type: string; payload }) => {
   const { type, payload } = action;
 
   switch (type) {
-    case `${ACTIONS.FETCH_MOVIES_BY_ID}${REQUEST_STATE.PENDING}`:
+    case ACTIONS.PUSH_MOVIE_BY_ID:
       return {
         ...state,
-        fulfilledById: false,
-      };
-    case `${ACTIONS.FETCH_MOVIES_BY_ID}${REQUEST_STATE.SUCCESS}`:
-      return {
-        ...state,
-        movieById: payload,
+        movieById: payload.movie,
         fulfilledById: true,
-      };
-
-    case `${ACTIONS.FETCH_MOVIES_BY_ID}${REQUEST_STATE.ERROR}`:
-      return {
-        ...state,
-        fulfilledById: true,
-        isError: true,
       };
 
     default:

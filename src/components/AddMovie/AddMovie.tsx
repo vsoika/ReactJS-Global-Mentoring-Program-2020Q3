@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { Formik, FormikHelpers } from "formik";
 import AddMovieFormGroup from "../AddMovieFormGroup";
@@ -69,7 +69,7 @@ const AddMovie: React.FC<IAddMovieProps> = (props) => {
         {({ ...formikProps }) => (
           <Form
             noValidate
-            onSubmit={formikProps.handleSubmit}
+            onSubmit={(e: FormEvent<HTMLFormElement>) => formikProps.handleSubmit(e)}
             onReset={formikProps.handleReset}
             data-testid="form"
           >

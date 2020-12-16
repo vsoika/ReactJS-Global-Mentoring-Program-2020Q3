@@ -2,15 +2,13 @@ import React, { Component } from "react";
 
 interface IErrorBoundaryState {
   isError: boolean;
-  error: React.ErrorInfo;
-  errorInfo: React.ErrorInfo;
+  error?: React.ErrorInfo;
+  errorInfo?: React.ErrorInfo;
 }
 
-class ErrorBoundary extends Component<{}, IErrorBoundaryState> {
+class ErrorBoundary extends Component<Record<string, never>, IErrorBoundaryState> {
   state = {
     isError: false,
-    error: null,
-    errorInfo: null,
   };
 
   componentDidCatch(error, errorInfo: React.ErrorInfo): void {
@@ -26,8 +24,8 @@ class ErrorBoundary extends Component<{}, IErrorBoundaryState> {
       return (
         <div className="pt-3 pl-3 error-message">
           <h1>Oops!!! Something went wrong</h1>
-          <p>The error: {this.state.error.toString()}</p>
-          <p>Where it occured: {this.state.errorInfo.componentStack}</p>
+          {/* <p>The error: {this.state.error.toString()}</p>
+          <p>Where it occured: {this.state.errorInfo.componentStack}</p> */}
         </div>
       );
     }

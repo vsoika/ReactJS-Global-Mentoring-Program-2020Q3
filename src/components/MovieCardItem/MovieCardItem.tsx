@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import EditMovie from "../EditMovie";
 import DeleteMovie from "../DeleteMovie";
-
-import { Link } from "react-router-dom";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface IMovieCardProps {
   poster_path: string;
   title: string;
   release_date: string;
-  id: number;
+  id: number | undefined;
 }
 
 const MovieCardItem: React.FC<IMovieCardProps> = ({
@@ -49,6 +49,9 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
     setSelectedMovieId(selectedMovieId);
   };
 
+  const router = useRouter();
+  console.log(router, id)
+
   return (
     <li
       className="movie-card mr-sm-3"
@@ -57,7 +60,7 @@ const MovieCardItem: React.FC<IMovieCardProps> = ({
       onMouseEnter={(e) => showEditButton(e)}
       onMouseLeave={(e) => hideEditButton(e)}
     >
-      <Link to={`/film/${id}`}>
+      <Link href={`/film/${id}`}>
         <div className="movie-card__image-wrapper">
           <img
             className="movie-card__image"

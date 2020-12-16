@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import { ACTIONS, REQUEST_STATE } from "../actionTypes";
 import { SORT_OPTIONS, GENRE_OPTIONS } from "../../constants";
 
@@ -18,23 +19,8 @@ const movies = (state = initialState, action: { type: string; payload? }) => {
   };
 
   switch (type) {
-    case `${ACTIONS.FETCH_MOVIES}${REQUEST_STATE.PENDING}`:
-      return {
-        ...state,
-        fulfilled: false,
-      };
-    case `${ACTIONS.FETCH_MOVIES}${REQUEST_STATE.SUCCESS}`:
-      return {
-        ...state,
-        moviesList: payload,
-        fulfilled: true,
-      };
-
-    case `${ACTIONS.FETCH_MOVIES}${REQUEST_STATE.ERROR}`:
-      return {
-        ...state,
-        fulfilled: false,
-      };
+    case ACTIONS.PUSH_MOVIES_TO_STORE:
+      return { ...state, moviesList: payload.movies };
 
     case ACTIONS.SET_SORT_OPTION:
       return { ...state, sortOption: payload.option };

@@ -2,11 +2,10 @@ import React, { useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import MovieCardItem from "../MovieCardItem";
 
-import "./MovieCardList.scss";
-
 import { getFilteredMovies } from "../../store/actionCreators";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/reducers";
+import { IFormikValues } from '../../constants';
 
 const MovieCardList: React.FC = () => {
   const dispatch = useDispatch();
@@ -23,7 +22,7 @@ const MovieCardList: React.FC = () => {
     <Row>
       <Col xs={12}>
         <ul className="list-unstyled list movies-list">
-          {filteredMoviesList.map((movie) => {
+          {filteredMoviesList.map((movie: IFormikValues) => {
             return (
               <MovieCardItem
                 key={movie.id}

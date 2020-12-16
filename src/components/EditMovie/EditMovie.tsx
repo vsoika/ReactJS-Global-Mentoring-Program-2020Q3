@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { Formik, FormikProps, FormikHelpers } from "formik";
 import AddMovieFormGroup from "../AddMovieFormGroup";
@@ -10,9 +10,13 @@ import {
   IFormikValues,
 } from "../../constants";
 
-import { updateMovie, getFilteredMovies } from "../../store/actionCreators";
+import { updateMovie } from "../../store/actionCreators";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/reducers";
+
+interface IMovie {
+  id: number
+}
 
 interface IEditMovieProps {
   show: boolean;
@@ -28,7 +32,7 @@ const EditMovie: React.FC<IEditMovieProps> = (props) => {
     (store: RootState) => store.movies.filteredMoviesList
   );
 
-  const selectedMovie = filteredMoviesList.filter((movie) => {
+  const selectedMovie: any[] = filteredMoviesList.filter((movie: IMovie) => {
     return movie.id === movieId;
   });
 
@@ -81,7 +85,7 @@ const EditMovie: React.FC<IEditMovieProps> = (props) => {
         {({ ...formikProps }: FormikProps<IFormikValues>) => (
           <Form
             noValidate
-            onSubmit={formikProps.handleSubmit}
+            onSubmit={(e: FormEvent<HTMLFormElement>) => formikProps.handleSubmit(e)}
             onReset={formikProps.handleReset}
           >
             <>

@@ -1,14 +1,8 @@
 import React from "react";
 import { Button, InputGroup, FormControl, Col } from "react-bootstrap";
-
-import { getFilteredMovies } from "../../store/actionCreators";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import Router from "next/router";
 
 const Search: React.FC = () => {
-  const dispatch = useDispatch();
-  const history = useHistory();
-
   const getInputMovie = () => {
     const inputValue = document.getElementById(
       "inputMovie"
@@ -16,20 +10,13 @@ const Search: React.FC = () => {
     const inputMovie = inputValue.value.trim();
 
     if(inputMovie !== '') {
-      history.push(`/search/search?title=${inputMovie}`)
+      Router.push(`/search?title=${inputMovie}`)
     }
   };
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       getInputMovie();
-    }
-  };
-
-  const handleChange = (event) => {
-    const { value } = event.target;
-    if (value === "") {
-      dispatch(getFilteredMovies());
     }
   };
 
@@ -41,7 +28,6 @@ const Search: React.FC = () => {
           placeholder="write a movie"
           aria-label="Search movie"
           onKeyPress={handleKeyPress}
-          onChange={handleChange}
         />
         <InputGroup.Append>
           <Button

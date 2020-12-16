@@ -2,34 +2,41 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import rootReducer from "./reducers";
+import { useMemo } from "react";
 
-function saveToLocalStorage(state) {
-  try {
-    const lastState = JSON.stringify(state);
-    localStorage.setItem("state", lastState);
-  } catch (e) {
-    console.warn(e);
-  }
+let store;
+
+function initStore(preloadedState) {
+  return createStore(
+    rootReducer,
+    preloadedState,
+    composeWithDevTools(applyMiddleware(thunk))
+  );
 }
 
-function loadFromLocalStorage() {
-  try {
-    const lastState = localStorage.getItem("state");
-    return lastState ? JSON.parse(lastState) : undefined;
-  } catch (e) {
-    console.warn(e);
-    return undefined;
+export const initializeStore = (preloadedState) => {
+  let _store = store ?? initStore(preloadedState);
+
+  // After navigating to a page with an initial Redux state, merge that state
+  // with the current state in the store, and create a new store
+  if (preloadedState && store) {
+    _store = initStore({
+      ...store.getState(),
+      ...preloadedState,
+    });
+    // Reset the current store
+    store = undefined;
   }
+
+  // For SSG and SSR always create a new store
+  if (typeof window === "undefined") return _store;
+  // Create the store once in the client
+  if (!store) store = _store;
+
+  return _store;
+};
+
+export function useStore(initialState) {
+  const store = useMemo(() => initializeStore(initialState), [initialState]);
+  return store;
 }
-
-const previousState = loadFromLocalStorage();
-
-const store = createStore(
-  rootReducer,
-  previousState,
-  composeWithDevTools(applyMiddleware(thunk))
-);
-
-store.subscribe(() => saveToLocalStorage(store.getState()));
-
-export default store;
